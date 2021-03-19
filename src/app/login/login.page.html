@@ -1,0 +1,67 @@
+<ion-header hidden>
+  <ion-toolbar>
+    <ion-title>
+      iLawyer
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-card>
+    <ion-card-content> 
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="ion-text-center">
+              <ion-icon name="school"></ion-icon>
+              <h1>iLawyer</h1>
+              <h6>Encontre o seu advogado</h6>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="ion-text-center">
+              <ion-input type="email" placeholder="Digite seu email" [(ngModel)]="email"></ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="ion-text-center">
+              <ion-input type="password" placeholder="Digite sua senha" [(ngModel)]="password"></ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="ion-text-center">
+              <ion-button expand="block" (click)="login()">Login</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="ion-text-center">
+              <ion-button expand="block" color="light" size="small" href="\signup">Não tem uma conta? Cadastre-se</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+
+  </ion-card>
+
+</ion-content>
