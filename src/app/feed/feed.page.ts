@@ -56,7 +56,7 @@ export class FeedPage implements OnInit {
 
       if(docs.size < this.pageSize){
         // all documents have been loaded
-        event.target.enable = false;
+        //event.target.enable = false;
       } else {
         event.target.complete();
         this.cursor = this.posts[this.posts.length - 1];
