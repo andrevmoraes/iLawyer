@@ -12,28 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-
-<ion-content>
-  <ion-button (click)="toggleInfiniteScroll()" expand="block">
-    Toggle Infinite Scroll
-  </ion-button>
-
-  <ion-list></ion-list>
-
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more data...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-</ion-content>
-
-
-
-
-
-<ion-content>
-
+<ion-list>
   <ion-grid class="ion-text-center">
     <ion-row>
       <ion-col>
@@ -49,20 +28,16 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+</ion-list>
 
+<ion-content>
 
   <ion-card *ngFor="let post of posts">
     <ion-card-header>
       <ion-card-subtitle> {{ ago(post.data().created) }} atrás </ion-card-subtitle>
       <ion-card-title> {{ post.data().owner_name }} </ion-card-title>
     </ion-card-header>
-
-    <ion-card-content>
-      {{ post.data().text }}
-    </ion-card-content>
-
-
-
+    <ion-card-content> {{ post.data().text }} </ion-card-content>
   </ion-card>
 
   <ion-infinite-scroll (ionInfinite)="loadMorePosts($event)">

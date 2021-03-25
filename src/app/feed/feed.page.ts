@@ -8,13 +8,15 @@ import { IonInfiniteScroll } from '@ionic/angular';
   templateUrl: './feed.page.html',
   styleUrls: ['./feed.page.scss'],
 })
+
 export class FeedPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  text: string = ""
+
+  text: string = "";
   posts: any[] = [];
   pageSize: number = 10;
   cursor: any;
-;
+
   constructor() {
     this.getPosts();
   }
@@ -24,27 +26,21 @@ export class FeedPage implements OnInit {
 
   getPosts(){
 
-
-
     this.posts=[]
     firebase.firestore().collection("posts").orderBy("created", "desc").limit(this.pageSize).get()
     .then((docs) => {
       docs.forEach((doc) => {
         this.posts.push(doc);
       })
-      console.log(this.posts)
+      console.log(this.posts);
       this.cursor = this.posts[this.posts.length - 1];
 
     }).catch((err) => {
-      console.log(err)
+      console.log(err);
     })
   }
 
-
-
-
-  loadMorePosts(event: { enable: (arg0: boolean) => void; target: { complete: () => void; }; }){
-    this.posts=[]
+  loadMorePosts(event){
     firebase.firestore().collection("posts").orderBy("created", "desc").startAfter(this.cursor).limit(this.pageSize).get()
     .then((docs) => {
 
@@ -55,8 +51,9 @@ export class FeedPage implements OnInit {
       console.log(this.posts)
 
       if(docs.size < this.pageSize){
-        // all documents have been loaded
+        // all documents have been loaded, then cancel scroll
         //event.target.enable = false;
+        this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
       } else {
         event.target.complete();
         this.cursor = this.posts[this.posts.length - 1];
@@ -89,6 +86,10 @@ export class FeedPage implements OnInit {
   ago(time){
     let difference = moment(time.toDate()).diff(moment());
     return moment.duration(difference).locale("pt").humanize();
+  }
+
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
 }
