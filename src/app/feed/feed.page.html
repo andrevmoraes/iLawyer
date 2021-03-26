@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button auto-hide="false"></ion-menu-button>
+      <ion-menu-button auto-hide="false" (click)="getUserInfo()"></ion-menu-button>
     </ion-buttons>
-    <ion-title> user.user.displayName </ion-title>
+    <ion-title> Feed </ion-title>
     <ion-buttons slot="end">
       <ion-button href="\login">
         Sair
@@ -11,6 +11,41 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+<ion-menu side="start" menuId="first" contentId="main">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>iLawyer</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title> {{name}} </ion-card-title>
+          <ion-card-subtitle> {{email}} </ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+      <ion-item>Menu Item</ion-item>
+      <ion-item>Menu Item</ion-item>
+      <ion-item>Menu Item</ion-item>
+      <ion-item>Menu Item</ion-item>
+      <ion-item>Menu Item</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-router-outlet id="main"></ion-router-outlet>
+
+
+
+
+
+
+
+
+
+
 
 <ion-list>
   <ion-grid class="ion-text-center">
@@ -20,7 +55,7 @@
       </ion-col>
       <ion-col size=7>
         <ion-button expand="block" color="light">
-          <ion-input type="text" placeholder="O que está acontecendo?" [(ngModel)]="text"></ion-input>
+          <ion-input type="text" placeholder= "O que está acontecendo?" [(ngModel)]="text"></ion-input>
         </ion-button>
       </ion-col>
       <ion-col>

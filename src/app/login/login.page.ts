@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import firebase from 'firebase'
 import { NavController, ToastController } from '@ionic/angular';
+import { FeedPage } from '../feed/feed.page';
 
 @Component({
   selector: 'app-login',
@@ -9,8 +10,10 @@ import { NavController, ToastController } from '@ionic/angular';
 })
 export class LoginPage {
 
+
   email: string = "";
   password: string = "";
+  nomeUsuario: string = "";
 
   constructor(public toastCtrl: ToastController, public navCtrl: NavController) {
   }
@@ -20,8 +23,9 @@ export class LoginPage {
     firebase.auth().signInWithEmailAndPassword(this.email, this.password)
       .then(async (user) => {
         console.log(user)
+        this.nomeUsuario = user.user.displayName;
         const toast = await this.toastCtrl.create({
-          message: "Olá, " + user.user.displayName + "!",
+          message: "Olá, " + this.nomeUsuario + "!",
           duration: 3000
         });
         toast.present();
@@ -36,6 +40,9 @@ export class LoginPage {
         toast.present();
       })
   }
+
+
+ 
 }
 
 
