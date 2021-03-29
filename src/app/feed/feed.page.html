@@ -1,17 +1,48 @@
-<ion-header>
+<ion-header [translucent]="false">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button auto-hide="false"></ion-menu-button>
     </ion-buttons>
-    <ion-title>iLawyer</ion-title>
+    <ion-title>Página Inicial</ion-title>
     <ion-buttons slot="end">
-      <ion-button href="\login">
-        Sair
-      </ion-button>
+      <ion-button href="\login">Sair</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
+<ion-content [fullscreen]="true">
+<ion-grid>
+
+  <ion-row>
+    <ion-col>
+      <div class="cards">
+        <ion-card>
+          <ion-item href="#">
+            <ion-card-header>
+              <img src="../../assets/img/agenda.jpg">
+              <ion-card-title>Horários agendados</ion-card-title>
+            </ion-card-header>
+          </ion-item>
+        </ion-card>
+      </div>    
+    </ion-col>
+    
+    <ion-col>
+      <div class="cards">
+        <ion-card class="ion-align-self-end">
+          <ion-item href="/areas">
+            <ion-card-header>
+              <img src="../../assets/img/agenda.jpg">
+              <ion-card-title>Buscar advogado</ion-card-title>
+            </ion-card-header>
+          </ion-item>
+        </ion-card>
+      </div>
+    </ion-col>
+    
+  </ion-row>
+
+</ion-grid>
+ 
 </ion-content>

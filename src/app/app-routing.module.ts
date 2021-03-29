@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'ilawyer',
     pathMatch: 'full'
   },
   {
@@ -19,6 +19,11 @@ const routes: Routes = [
     path: 'feed',
     loadChildren: () => import('./feed/feed.module').then( m => m.FeedPageModule)
   },
+  {
+    path: 'ilawyer',
+    loadChildren: () => import('./ilawyer/ilawyer.module').then( m => m.IlawyerPageModule)
+  },
+
 ];
 
 @NgModule({

@@ -1,3 +1,31 @@
 ion-icon {
     font-size: 90px;
   }
+
+.slogan {
+  left: calc(50% - 168px/2);
+  top: 207px;
+  position: inline-block;
+}
+
+.novo-email {
+  position: absolute;
+  width: 350px;
+  height: 51px;
+  left: calc(50% - 350px/2);
+  top: 357px;
+}
+
+.senha {
+  position: absolute;
+  width: 350px;
+  height: 51px;
+  left: calc(50% - 350px/2);
+  top: 424px;
+}
+
+.botao-entrar{
+  left: calc(50% - 350px/2);
+  top: 491px;
+
+}
