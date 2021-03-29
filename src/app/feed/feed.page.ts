@@ -102,15 +102,6 @@ export class FeedPage implements OnInit {
     this.menu.open('first');
   }
 
-  openEnd() {
-    this.menu.open('end');
-  }
-
-  openCustom() {
-    this.menu.enable(true, 'custom');
-    this.menu.open('custom');
-  }
-
   getUserInfoObs() {
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -147,4 +138,43 @@ export class FeedPage implements OnInit {
       console.log("Não foi possível recolher as informações")
     }
   }
+
+  doRefresh(event: { target: { complete: () => void; }; }) {
+    console.log('Início do carregamento assíncrono da pagina');
+    console.log('nao ta fazenddo nada, tem que por pra recarregar e eu nao sei fazer isso')
+
+    setTimeout(() => {
+      console.log('Fim do carregamento assíncrono da página');
+      event.target.complete();
+    }, 2000);
+  }
+
+
+
+
+update(){
+  
+  //var user = firebase.auth().currentUser;
+  //
+  //user.updateProfile({
+  //  displayName: "André Moraes",
+  //  photoURL: "https://firebasestorage.googleapis.com/v0/b/ilawyer-db.appspot.com/o/foto%20de%20perfil.jpg?alt=media&token=9b115b61-7f9c-4bf7-b6c4-948d872c9450"
+  //}).then(function() {
+  //  console.log("Update successful");
+  //}).catch(function(error) {
+    console.log("An error happened");
+  //});
+}
+
+
+
+
+
+
+
+
+
+
+
+
 }
