@@ -1,13 +1,29 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import firebase from 'firebase';
 import * as moment from 'moment';
-import { IonInfiniteScroll, MenuController, NavController, ToastController } from '@ionic/angular';
+import { IonInfiniteScroll, MenuController, NavController, ToastController, LoadingController } from '@ionic/angular';
+import { Camera } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.page.html',
   styleUrls: ['./feed.page.scss'],
 })
+
+/*
+@NgModule({
+  ...
+
+  providers: [
+    ...
+    Camera
+    ...
+  ]
+  ...
+})
+*/
+
+export class AppModule { }
 
 export class FeedPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
@@ -26,7 +42,7 @@ export class FeedPage implements OnInit {
   emailVerified: boolean;
 
 
-  constructor(private menu: MenuController, public navCtrl: NavController, public toastCtrl: ToastController) {  
+  constructor(private menu: MenuController, public navCtrl: NavController, public toastCtrl: ToastController, public LoadingCrtl: LoadingController) {  
     this.getUserInfoObs();
     this.getPosts();
   }
@@ -37,7 +53,40 @@ export class FeedPage implements OnInit {
   getPosts() {
 
     this.posts = []
-    firebase.firestore().collection("posts").orderBy("created", "desc").limit(this.pageSize).get()
+
+    let loading = this.LoadingCrtl
+
+
+    
+    let query = firebase.firestore().collection("posts").orderBy("created", "desc").limit(this.pageSize);
+
+    /* 
+    //update realtime
+    query.onSnapshot((snapshot) => {
+      console.log("Snapshot")
+      let changedDocs = snapshot.docChanges();
+
+      changedDocs.forEach((change) => {
+
+        if(change.type == "added"){
+          console.log("added")
+        }
+
+        if(change.type == "modified"){
+          console.log("modified")
+        }
+
+        if(change.type == "removed"){
+          console.log("removed")
+        }
+
+      })
+
+
+    });
+    */
+
+    query.get()
       .then((docs) => {
         docs.forEach((doc) => {
           this.posts.push(doc);
@@ -48,6 +97,7 @@ export class FeedPage implements OnInit {
       }).catch((err) => {
         console.log(err);
       })
+      
   }
 
   loadMorePosts(event: { target: { complete: () => void; }; }) {
@@ -62,7 +112,6 @@ export class FeedPage implements OnInit {
 
         if (docs.size < this.pageSize) {
           // all documents have been loaded, then cancel scroll
-          //event.target.enable = false;
           this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
         } else {
           event.target.complete();
@@ -141,15 +190,24 @@ export class FeedPage implements OnInit {
 
   doRefresh(event: { target: { complete: () => void; }; }) {
     console.log('Início do carregamento assíncrono da pagina');
-    console.log('nao ta fazenddo nada, tem que por pra recarregar e eu nao sei fazer isso')
+    this.getPosts();
+    this.toggleInfiniteScroll();
+    event.target.complete();
 
     setTimeout(() => {
-      console.log('Fim do carregamento assíncrono da página');
+      console.log('Fim do carregamento assíncrono da página TIMEOUT');
       event.target.complete();
     }, 2000);
   }
 
-
+logout(){
+  firebase.auth().signOut().then(() => {
+    console.log("Sign-out successful");
+    this.navCtrl.navigateRoot('/login');
+  }).catch((error) => {
+    // An error happened.
+  });
+}
 
 
 update(){

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import firebase from 'firebase'
 import { NavController, ToastController } from '@ionic/angular';
-import { FeedPage } from '../feed/feed.page';
 
 @Component({
   selector: 'app-login',
