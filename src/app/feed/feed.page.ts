@@ -2,28 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import firebase from 'firebase';
 import * as moment from 'moment';
 import { IonInfiniteScroll, MenuController, NavController, ToastController, LoadingController } from '@ionic/angular';
-import { Camera } from '@ionic-native/camera/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
+
+import { SignupPageRoutingModule } from '../signup/signup-routing.module';
+import { getLocaleCurrencyCode } from '@angular/common';
 
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.page.html',
   styleUrls: ['./feed.page.scss'],
 })
-
-/*
-@NgModule({
-  ...
-
-  providers: [
-    ...
-    Camera
-    ...
-  ]
-  ...
-})
-*/
-
-export class AppModule { }
 
 export class FeedPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
@@ -33,6 +21,7 @@ export class FeedPage implements OnInit {
   pageSize: number = 10;
   cursor: any;
   nomeUsuario: string;
+  image: string;
 
   //firebase auth
   name: string;
@@ -42,7 +31,10 @@ export class FeedPage implements OnInit {
   emailVerified: boolean;
 
 
-  constructor(private menu: MenuController, public navCtrl: NavController, public toastCtrl: ToastController, public LoadingCrtl: LoadingController) {  
+  constructor(private menu: MenuController, public navCtrl: NavController,
+    private toastCtrl: ToastController, private LoadingCrtl: LoadingController,
+    private camera: Camera) {  
+
     this.getUserInfoObs();
     this.getPosts();
   }
@@ -131,6 +123,9 @@ export class FeedPage implements OnInit {
       owner_name: firebase.auth().currentUser.displayName
     }).then((doc) => {
       console.log(doc)
+      if(this.image){
+        this.upload(doc.id);
+      }
       this.getPosts()
     }).catch((err) => {
       console.log(err)
@@ -200,35 +195,78 @@ export class FeedPage implements OnInit {
     }, 2000);
   }
 
-logout(){
-  firebase.auth().signOut().then(() => {
-    console.log("Sign-out successful");
-    this.navCtrl.navigateRoot('/login');
-  }).catch((error) => {
-    // An error happened.
-  });
-}
+  logout(){
+    firebase.auth().signOut().then(() => {
+      console.log("Sign-out successful")
+      this.navCtrl.navigateRoot('/feed');
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
 
 
-update(){
-  
-  //var user = firebase.auth().currentUser;
-  //
-  //user.updateProfile({
-  //  displayName: "André Moraes",
-  //  photoURL: "https://firebasestorage.googleapis.com/v0/b/ilawyer-db.appspot.com/o/foto%20de%20perfil.jpg?alt=media&token=9b115b61-7f9c-4bf7-b6c4-948d872c9450"
-  //}).then(function() {
-  //  console.log("Update successful");
-  //}).catch(function(error) {
-    console.log("An error happened");
-  //});
-}
+  update(){
+    
+    //var user = firebase.auth().currentUser;
+    //
+    //user.updateProfile({
+    //  displayName: "André Moraes",
+    //  photoURL: "https://firebasestorage.googleapis.com/v0/b/ilawyer-db.appspot.com/o/foto%20de%20perfil.jpg?alt=media&token=9b115b61-7f9c-4bf7-b6c4-948d872c9450"
+    //}).then(function() {
+    //  console.log("Update successful");
+    //}).catch(function(error) {
+      console.log("An error happened");
+    //});
+  }
 
 
+  addPhoto(){
+    this.launchCamera();
+  }
+
+  launchCamera(){
+
+    let options: CameraOptions ={
+      quality: 100,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+      targetHeight: 512,
+      targetWidth: 512
+      //allowEdit: true
+    }
+
+    this.camera.getPicture(options).then((base64Image) =>{
+      console.log("imagem: " + base64Image);
+
+      this.image = "data:image/png;base64," + base64Image;
 
 
+    }).catch((err) =>{
+      console.log("erro: " + err)
+    })
+  }
 
 
+  upload(name: string){
+    let ref = firebase.storage().ref("postImages/" + name);
+
+    let uploadTask = ref.putString(this.image.split(',')[1], "base64");
+
+    uploadTask.on("state_changed", (taskSnapshot) => {
+      console.log(taskSnapshot)
+    }, (error) => {
+      console.log(error)
+    }, () =>{
+      console.log("upload completo");
+
+      uploadTask.snapshot.ref.getDownloadURL().then((url)=>{
+        console.log(url)
+      })
+    })
+  }
 
 
 
