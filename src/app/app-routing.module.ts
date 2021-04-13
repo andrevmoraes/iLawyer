@@ -22,7 +22,15 @@ const routes: Routes = [
   {
     path: 'ilawyer',
     loadChildren: () => import('./ilawyer/ilawyer.module').then( m => m.IlawyerPageModule)
+  },  {
+    path: 'agenda',
+    loadChildren: () => import('./agenda/agenda.module').then( m => m.AgendaPageModule)
   },
+  {
+    path: 'marcar-horario',
+    loadChildren: () => import('./marcar-horario/marcar-horario.module').then( m => m.MarcarHorarioPageModule)
+  },
+
 
 ];
 
