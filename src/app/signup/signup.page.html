@@ -1,76 +1,11 @@
-<ion-header hidden>
-  <ion-toolbar>
-    <ion-title>
-      iLawyer
-    </ion-title>
-  </ion-toolbar>
+<ion-header>
+  <div class="logo-ilawyer"></div>
+  <p class="slogan texto">Encontre seu advogado</p>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-
-  <ion-card>
-    <ion-card-content> 
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div class="ion-text-center">
-              <ion-icon name="school"></ion-icon>
-              <h1>iLawyer</h1>
-              <h6>Encontre o seu advogado</h6>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-content>
-      <ion-grid>
-
-        <ion-row>
-          <ion-col>
-            <div class="ion-text-center">
-              <ion-input type="name" placeholder="Digite seu nome" [(ngModel)]="name"></ion-input>
-            </div>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col>
-            <div class="ion-text-center">
-              <ion-input type="email" placeholder="Digite seu email" [(ngModel)]="email"></ion-input>
-            </div>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col>
-            <div class="ion-text-center">
-              <ion-input type="password" placeholder="Digite sua senha" [(ngModel)]="password"></ion-input>
-            </div>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col>
-            <div class="ion-text-center">
-              <ion-button expand="block" (click)="signup()">Cadastre-se</ion-button>
-            </div>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col>
-            <div class="ion-text-center">
-              <ion-button expand="block" color="light" size="small" href="\login">Já tem uma conta? Faça Login</ion-button>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-
-
-  </ion-card>
-
+<ion-content>
+  <ion-input class="input texto" type="name" placeholder="Digite seu nome" [(ngModel)]="name"></ion-input>
+  <ion-input class="input novo-email texto" type="email" placeholder="Digite seu email" [(ngModel)]="email"></ion-input>
+  <ion-input class="input senha texto" type="password" placeholder="Digite sua senha" [(ngModel)]="password"></ion-input>
+  <ion-button class="botao-entrar cor-botao texto" fill="clear" expand="block" (click)="signup()">CADASTRAR</ion-button>
 </ion-content>

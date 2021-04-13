@@ -23,6 +23,7 @@
     "cordova-android": "9.0.0",
     "firebase": "^8.3.1",
     "git": "^0.1.5",
+    "ionic2-calendar": "^0.6.7",
     "moment": "^2.29.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
