@@ -3,18 +3,25 @@
     <ion-buttons slot="start">
       <ion-menu-button auto-hide="false" (click)="getUserInfo()"></ion-menu-button>
     </ion-buttons>
+    
     <ion-title>Página Inicial</ion-title>
+    
+    <!--
     <ion-buttons slot="end">
-<<<<<<< HEAD
+      
       <ion-button (click)="logout()">
-        Sair
+        Logout
       </ion-button>
-=======
+      
+      
       <ion-button href="\login">Sair</ion-button>
->>>>>>> 80cc2087fd86df62298cf76f9551ec38dccc68ab
     </ion-buttons>
+    -->
   </ion-toolbar>
 </ion-header>
+
+
+
 
 <ion-menu side="start" menuId="first" contentId="main">
   <ion-header>
@@ -34,22 +41,11 @@
         </ion-label>
       </ion-item>
 
-<<<<<<< HEAD
-      <ion-item>Menu Item 1</ion-item>
-      <ion-item>Menu Item 2</ion-item>
-      <ion-item>Menu Item 3</ion-item>
-      <ion-item>Menu Item 4</ion-item>
-      <ion-item>Menu Item 5</ion-item>
-=======
       <ion-item href="/agenda/">Agenda</ion-item>
-      <ion-item>Menu Item</ion-item>
-      <ion-item>Menu Item</ion-item>
-      <ion-item>Menu Item</ion-item>
-      <ion-item>Menu Item</ion-item>
->>>>>>> 80cc2087fd86df62298cf76f9551ec38dccc68ab
     </ion-list>
   </ion-content>
 </ion-menu>
+
 
 <ion-router-outlet id="main"></ion-router-outlet>
 
@@ -94,8 +90,8 @@
 
   <ion-card *ngFor="let post of posts">
     <ion-card-header>
-      <ion-card-subtitle> {{ ago(post.data().created) }} atrás </ion-card-subtitle>
-      <ion-card-title> {{ post.data().owner_name }} </ion-card-title>
+      <ion-card-subtitle> Publicado por {{ post.data().owner_name }} há {{ ago(post.data().created) }} </ion-card-subtitle>
+      <ion-card-title> </ion-card-title>
     </ion-card-header>
     <ion-card-content> {{ post.data().text }} </ion-card-content>
   </ion-card>
@@ -105,4 +101,24 @@
   </ion-infinite-scroll>
 </ion-content>
 
+<!--
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="speakers">
+      <ion-icon name="home"></ion-icon>
+      <ion-label>Início</ion-label>
+    </ion-tab-button>
 
+    <ion-tab-button tab="map">
+      <ion-icon name="calendar"></ion-icon>
+      <ion-label>Agenda</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="about">
+      <ion-icon name="person"></ion-icon>
+      <ion-label>Perfil</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
+
+-->
