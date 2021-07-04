@@ -1,27 +1,19 @@
-<!-- Arrumar o menu -->
-
 <ion-header [translucent]="false">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button auto-hide="false" (click)="getUserInfo()"></ion-menu-button>
+      <ion-menu-button auto-hide="false" (click)="getUserInfo()">
+      </ion-menu-button>
     </ion-buttons>
-    
-    <ion-title>Agenda</ion-title>
-    
-    <!--
+    <ion-title>
+      Agenda
+    </ion-title>
     <ion-buttons slot="end">
-      
       <ion-button (click)="logout()">
         Logout
-      </ion-button>
-      
-      
-      <ion-button href="\login">Sair</ion-button>
-    </ion-buttons>
-    -->
+      </ion-button> 
+    </ion-buttons>   
   </ion-toolbar>
 </ion-header>
-
 
 <ion-menu side="start" menuId="first" contentId="main">
   <ion-header>
@@ -40,13 +32,10 @@
           <p>{{email}}</p>
         </ion-label>
       </ion-item>
-
       <ion-item href="/agenda/">Agenda</ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>
-
-
 
 <ion-content>
   <ion-row>
@@ -80,6 +69,5 @@
   startingDayWeek="1"
   [monthviewDisplayEventTemplate]="template"
   >
-</calendar>
-
+  </calendar>
 </ion-content>

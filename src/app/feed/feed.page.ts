@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import firebase from 'firebase';
 import * as moment from 'moment';
-import { IonInfiniteScroll, MenuController, NavController, ToastController, LoadingController } from '@ionic/angular';
+import { IonInfiniteScroll, MenuController, NavController, LoadingController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
-
-import { SignupPageRoutingModule } from '../signup/signup-routing.module';
-import { getLocaleCurrencyCode } from '@angular/common';
 
 @Component({
   selector: 'app-feed',
@@ -31,8 +28,9 @@ export class FeedPage implements OnInit {
   emailVerified: boolean;
 
 
-  constructor(private menu: MenuController, public navCtrl: NavController,
-    private toastCtrl: ToastController, private LoadingCrtl: LoadingController,
+  constructor(
+    private menu: MenuController,
+    public navCtrl: NavController,
     private camera: Camera) {  
 
     this.getUserInfoObs();
@@ -43,41 +41,8 @@ export class FeedPage implements OnInit {
   }
 
   getPosts() {
-
     this.posts = []
-
-    let loading = this.LoadingCrtl
-
-
-    
     let query = firebase.firestore().collection("posts").orderBy("created", "desc").limit(this.pageSize);
-
-    /* 
-    //update realtime
-    query.onSnapshot((snapshot) => {
-      console.log("Snapshot")
-      let changedDocs = snapshot.docChanges();
-
-      changedDocs.forEach((change) => {
-
-        if(change.type == "added"){
-          console.log("added")
-        }
-
-        if(change.type == "modified"){
-          console.log("modified")
-        }
-
-        if(change.type == "removed"){
-          console.log("removed")
-        }
-
-      })
-
-
-    });
-    */
-
     query.get()
       .then((docs) => {
         docs.forEach((doc) => {
@@ -85,23 +50,18 @@ export class FeedPage implements OnInit {
         })
         console.log(this.posts);
         this.cursor = this.posts[this.posts.length - 1];
-
       }).catch((err) => {
         console.log(err);
       })
-      
   }
 
   loadMorePosts(event: { target: { complete: () => void; }; }) {
     firebase.firestore().collection("posts").orderBy("created", "desc").startAfter(this.cursor).limit(this.pageSize).get()
       .then((docs) => {
-
         docs.forEach((doc) => {
           this.posts.push(doc);
         })
-
         console.log(this.posts)
-
         if (docs.size < this.pageSize) {
           // all documents have been loaded, then cancel scroll
           this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
@@ -109,7 +69,6 @@ export class FeedPage implements OnInit {
           event.target.complete();
           this.cursor = this.posts[this.posts.length - 1];
         }
-
       }).catch((err) => {
         console.log(err)
       })
@@ -147,7 +106,6 @@ export class FeedPage implements OnInit {
   }
 
   getUserInfoObs() {
-
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         console.log("Usuário logado");
@@ -161,22 +119,17 @@ export class FeedPage implements OnInit {
   getUserInfo(){
     console.log("Recolhendo informações do usuário logado");
     var user = firebase.auth().currentUser;
-    
-    if (user != null) {
+        if (user != null) {
     this.name = user.displayName;
     this.email = user.email;
     this.photoUrl = user.photoURL;
     this.emailVerified = user.emailVerified;
-    this.uid = user.uid;  // The user's ID, unique to the Firebase project. Do NOT use
-                    // this value to authenticate with your backend server, if
-                    // you have one. Use User.getToken() instead.
-    
+    this.uid = user.uid;
     console.log("name: " + this.name);
     console.log("email: " + this.email);
     console.log("photoUrl: " + this.photoUrl);
     console.log("emailVerified: " + this.emailVerified);
     console.log("uid: " + this.uid);
-
     }else{
       this.email = "Carregando..."
       console.log("Não foi possível recolher as informações")
@@ -188,7 +141,6 @@ export class FeedPage implements OnInit {
     this.getPosts();
     this.toggleInfiniteScroll();
     event.target.complete();
-
     setTimeout(() => {
       console.log('Fim do carregamento assíncrono da página TIMEOUT');
       event.target.complete();
@@ -204,28 +156,11 @@ export class FeedPage implements OnInit {
     });
   }
 
-
-  update(){
-    
-    //var user = firebase.auth().currentUser;
-    //
-    //user.updateProfile({
-    //  displayName: "André Moraes",
-    //  photoURL: "https://firebasestorage.googleapis.com/v0/b/ilawyer-db.appspot.com/o/foto%20de%20perfil.jpg?alt=media&token=9b115b61-7f9c-4bf7-b6c4-948d872c9450"
-    //}).then(function() {
-    //  console.log("Update successful");
-    //}).catch(function(error) {
-      console.log("An error happened");
-    //});
-  }
-
-
   addPhoto(){
     this.launchCamera();
   }
 
   launchCamera(){
-
     let options: CameraOptions ={
       quality: 100,
       sourceType: this.camera.PictureSourceType.CAMERA,
@@ -240,37 +175,25 @@ export class FeedPage implements OnInit {
 
     this.camera.getPicture(options).then((base64Image) =>{
       console.log("imagem: " + base64Image);
-
       this.image = "data:image/png;base64," + base64Image;
-
-
     }).catch((err) =>{
       console.log("erro: " + err)
     })
   }
 
-
   upload(name: string){
     let ref = firebase.storage().ref("postImages/" + name);
-
     let uploadTask = ref.putString(this.image.split(',')[1], "base64");
-
     uploadTask.on("state_changed", (taskSnapshot) => {
       console.log(taskSnapshot)
     }, (error) => {
       console.log(error)
     }, () =>{
       console.log("upload completo");
-
       uploadTask.snapshot.ref.getDownloadURL().then((url)=>{
         console.log(url)
       })
     })
   }
-
-
-
-
-
 
 }
