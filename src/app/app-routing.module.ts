@@ -30,6 +30,10 @@ const routes: Routes = [
     path: 'marcar-horario',
     loadChildren: () => import('./marcar-horario/marcar-horario.module').then( m => m.MarcarHorarioPageModule)
   },
+  {
+    path: 'userinfo',
+    loadChildren: () => import('./userinfo/userinfo.module').then( m => m.UserinfoPageModule)
+  },
 
 
 ];
