@@ -1,7 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import firebase from 'firebase';
 import * as moment from 'moment';
-import { IonInfiniteScroll, MenuController, NavController, LoadingController } from '@ionic/angular';
+import { IonInfiniteScroll,
+  MenuController,
+  NavController,
+  AlertController,
+  ToastController,
+  LoadingController,
+  ActionSheetController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
 
 @Component({
@@ -27,10 +33,12 @@ export class FeedPage implements OnInit {
   uid: string;
   emailVerified: boolean;
 
-
   constructor(
     private menu: MenuController,
     public navCtrl: NavController,
+    public alertController: AlertController,
+    public toastCtrl: ToastController,
+    public actionSheetController: ActionSheetController,
     private camera: Camera) {  
 
     this.getUserInfoObs();
@@ -39,6 +47,81 @@ export class FeedPage implements OnInit {
 
   ngOnInit() {
   }
+
+  async presentAlertMultipleButtons() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Postar',
+      inputs: [
+        {
+          name: 'text',
+          id: 'text',
+          type: 'textarea',
+          placeholder: 'O que está acontecendo?'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Postar',
+          handler: (alertData) => {
+            console.log('Confirm Ok: ' + this.text);
+            this.post(alertData.text);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async presentActionSheet(dataid: string, userpost: string) { 
+    const actionSheet = await this.actionSheetController.create({
+      cssClass: 'my-custom-class',
+      buttons: [
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          //icon: 'trash',
+          handler: async () => {
+            console.log("lidando...");
+            var user = firebase.auth().currentUser;
+            console.log("usuario: " + user + " - " + user.uid);
+            if (userpost == user.uid) {
+              console.log('Delete clicked: ' + dataid);
+              firebase.firestore().collection("posts").doc(dataid).delete().then(() => {
+              this.getPosts();
+              })          
+            }else{
+              console.log("Você só pode excluir as suas postagens");
+              const toast = this.toastCtrl.create({
+                message: "Você só pode excluir as suas postagens",
+                duration: 3000
+              });
+              (await toast).present();
+            };
+          }
+        }, {
+          text: 'Cancelar',
+          //icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
+
+    const { role } = await actionSheet.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
+  }
+
 
   getPosts() {
     this.posts = []
@@ -74,9 +157,9 @@ export class FeedPage implements OnInit {
       })
   }
 
-  post() {
+  post(text: string) {
     firebase.firestore().collection("posts").add({
-      text: this.text,
+      text: text,
       created: firebase.firestore.FieldValue.serverTimestamp(),
       owner: firebase.auth().currentUser.uid,
       owner_name: firebase.auth().currentUser.displayName
@@ -148,11 +231,11 @@ export class FeedPage implements OnInit {
   }
 
   logout(){
-    firebase.auth().signOut().then(() => {
-      console.log("Sign-out successful")
-      this.navCtrl.navigateRoot('/feed');
+      firebase.auth().signOut().then(() => {
+      console.log("Sign-out successful");
+      this.navCtrl.navigateRoot('/login');
     }).catch((error) => {
-      // An error happened.
+      console.log("An error happened");
     });
   }
 
