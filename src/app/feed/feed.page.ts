@@ -46,6 +46,7 @@ export class FeedPage implements OnInit {
   }
 
   ngOnInit() {
+    this.getUserInfo();
   }
 
   async presentAlertMultipleButtons() {
@@ -199,24 +200,28 @@ export class FeedPage implements OnInit {
     });
   }
 
-  getUserInfo(){
+  getUserInfo() {
     console.log("Recolhendo informações do usuário logado");
-    var user = firebase.auth().currentUser;
-        if (user != null) {
-    this.name = user.displayName;
-    this.email = user.email;
-    this.photoUrl = user.photoURL;
-    this.emailVerified = user.emailVerified;
-    this.uid = user.uid;
-    console.log("name: " + this.name);
-    console.log("email: " + this.email);
-    console.log("photoUrl: " + this.photoUrl);
-    console.log("emailVerified: " + this.emailVerified);
-    console.log("uid: " + this.uid);
-    }else{
-      this.email = "Carregando..."
-      console.log("Não foi possível recolher as informações")
-    }
+    this.name = "Carregando...";
+    this.email = "Carregando...";
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.name = user.displayName;
+        this.email = user.email;
+        this.photoUrl = user.photoURL;
+        this.emailVerified = user.emailVerified;
+        this.uid = user.uid;
+        console.log("name: " + this.name);
+        console.log("email: " + this.email);
+        console.log("photoUrl: " + this.photoUrl);
+        console.log("emailVerified: " + this.emailVerified);
+        console.log("uid: " + this.uid);
+      } else {
+        this.email = "Carregando..."
+        console.log("Não foi possível recolher as informações")
+      }
+    });
   }
 
   doRefresh(event: { target: { complete: () => void; }; }) {
