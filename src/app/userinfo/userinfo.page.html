@@ -8,7 +8,7 @@
       Meu Perfil
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button  (click)="logout()">
+      <ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -42,37 +42,27 @@
 
 <ion-content>
 
-  <ion-card>
-    <ion-card-content>
-      <ion-avatar slot="end">
-        <img src="{{ photoUrl }}">
-      </ion-avatar>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card (click)="alterarNomePopup()">
-    <ion-card-content>
-      {{name}}
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card (click)="alterarEmailPopup()">
-    <ion-card-content>
-      {{email}}
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card (click)="alterarSenhaPopup()">
-    <ion-card-content>
-      Alterar senha
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card (click)="deletarContaPopup()">
-    <ion-card-content>
-      Deletar minha conta
-    </ion-card-content>
-  </ion-card>
+  <ion-item (click)="getUserInfo()">
+    <ion-avatar slot="start">
+      <img src="{{ photoUrl }}">
+    </ion-avatar>
+    <ion-label>
+      <h3>{{name}}</h3>
+      <p>{{email}}</p>
+    </ion-label>
+  </ion-item>
+  <br />
+  <br />
+  <br />
+  <ion-button expand="block" (click)="tirarFoto()">Alterar foto</ion-button>
+  <br />
+  <ion-button expand="block" (click)="alterarNomePopup()">Alterar nome</ion-button>
+  <br />
+  <ion-button expand="block" (click)="alterarEmailPopup()">Alterar email</ion-button>
+  <br />
+  <ion-button expand="block" (click)="alterarSenhaPopup()">Alterar senha</ion-button>
+  <br />
+  <ion-button expand="block" color="danger" (click)="deletarContaPopup()">Deletar minha conta</ion-button>
 
 
 </ion-content>

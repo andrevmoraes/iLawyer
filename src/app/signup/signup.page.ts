@@ -50,7 +50,7 @@ export class SignupPage implements OnInit {
       let newUser: firebase.User = data.user;
       newUser.updateProfile({
         displayName: this.name,
-        photoURL   : ""
+        photoURL   : "https://firebasestorage.googleapis.com/v0/b/ilawyer-db.appspot.com/o/Papel%20de%20Parede.jpg?alt=media&token=27a2bdf7-5e2b-4b70-b10b-9dbb449df2e4"
       }).then(() => {
         console.log("Profile Updated")
         this.contaCriadaSucesso();

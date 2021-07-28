@@ -28,6 +28,8 @@ export class UserinfoPage implements OnInit {
   uid: string;
   emailVerified: boolean;
 
+  image: string;
+
   constructor(
     private menu: MenuController,
     public navCtrl: NavController,
@@ -175,6 +177,70 @@ export class UserinfoPage implements OnInit {
     await alert.present();
   }
 
+  tirarFoto() {
+    let options: CameraOptions = {
+      quality: 80,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+      targetHeight: 512,
+      targetWidth: 512,
+      allowEdit: false
+    }
+
+    this.camera.getPicture(options).then((base64Image) => {
+      console.log(base64Image);
+      this.image = "data:image/png;base64," + base64Image;
+      this.uploadImage(this.uid);
+    }).catch(async (err) => {
+      console.log(err);
+      const toast = await this.toastCtrl.create({
+        message: err,
+        duration: 3000
+      });
+      toast.present();
+    })
+  }
+
+  uploadImage(name: string) {
+    let ref = firebase.storage().ref("fotoPerfil/" + name);
+    let uploadTask = ref.putString(this.image.split(',')[1], "base64");
+    uploadTask.on("state_changed", (taskSnapshot) => {
+      console.log(taskSnapshot);
+    }, (error) => {
+      console.log(error);
+    }, () => {
+      console.log("Upload de imagem concluído");
+      uploadTask.snapshot.ref.getDownloadURL().then((url) => {
+        console.log(url);
+
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            console.log("Usuário logado");
+            user.updateProfile({
+              photoURL: url
+            }).then(function (user) {
+              console.log("Imagem alterada");
+            }, async function (error) {
+              console.log("Ocorreu um erro: " + error);
+              const toast = await this.toastCtrl.create({
+                message: error,
+                duration: 3000
+              });
+              toast.present();
+            });
+          } else {
+            console.log("Nenhum usuário logado. Redirecionando à tela de login");
+            this.navCtrl.navigateRoot('/login');
+          }
+        });
+
+      })
+    })
+  }
+
 
   alterarEmail(email: string) {
     firebase.auth().currentUser.verifyBeforeUpdateEmail(email)
@@ -197,7 +263,7 @@ export class UserinfoPage implements OnInit {
         }, async function (error) {
           console.log("Ocorreu um erro: " + error);
           const toast = await this.toastCtrl.create({
-            message: error.message,
+            message: error,
             duration: 3000
           });
           toast.present();
@@ -214,8 +280,13 @@ export class UserinfoPage implements OnInit {
       .then(function () {
         console.log("Senha alterada");
       })
-      .catch(function (error) {
+      .catch(async function (error) {
         console.log("Ocorreu um erro: " + error);
+        const toast = await this.toastCtrl.create({
+          message: error,
+          duration: 3000
+        });
+        toast.present();
       });
   }
 
@@ -224,8 +295,13 @@ export class UserinfoPage implements OnInit {
       .then(function () {
         console.log("Conta deletada");
       })
-      .catch(function (error) {
+      .catch(async function (error) {
         console.log("Ocorreu um erro: " + error);
+        const toast = await this.toastCtrl.create({
+          message: error,
+          duration: 3000
+        });
+        toast.present();
       });
   }
 
@@ -246,7 +322,7 @@ export class UserinfoPage implements OnInit {
     this.name = "Carregando...";
     this.email = "Carregando...";
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         this.name = user.displayName;
         this.email = user.email;
@@ -261,6 +337,11 @@ export class UserinfoPage implements OnInit {
       } else {
         this.email = "Carregando..."
         console.log("Não foi possível recolher as informações")
+        const toast = await this.toastCtrl.create({
+          message: "Não foi possível recolher as informações",
+          duration: 3000
+        });
+        toast.present();
       }
     });
   }
@@ -269,8 +350,13 @@ export class UserinfoPage implements OnInit {
     firebase.auth().signOut().then(() => {
       console.log("Sign-out successful");
       this.navCtrl.navigateRoot('/login');
-    }).catch((error) => {
-      console.log("An error happened");
+    }).catch(async (error) => {
+      console.log("An error happened: " + error);
+      const toast = await this.toastCtrl.create({
+        message: error,
+        duration: 3000
+      });
+      toast.present();
     });
   }
 
