@@ -12,7 +12,6 @@ import {
 } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
 
-
 @Component({
   selector: 'app-userinfo',
   templateUrl: './userinfo.page.html',
@@ -38,20 +37,61 @@ export class UserinfoPage implements OnInit {
     public actionSheetController: ActionSheetController,
     private camera: Camera) {
 
-    this.getUserInfoObs();
-    this.getUserInfo();
   }
 
   ngOnInit() {
     this.getUserInfo();
   }
 
+  //abrir menu
   openFirst() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
   }
 
+  //obter informações do usuário
+  getUserInfo() {
+    console.log("Recolhendo as informações do usuário");
+    this.name = "Carregando...";
+    this.email = "Carregando...";
 
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.name = user.displayName;
+        this.email = user.email;
+        this.photoUrl = user.photoURL;
+        this.emailVerified = user.emailVerified;
+        this.uid = user.uid;
+        console.log("Usuário " + this.name + " logado");
+        console.log("email: " + this.email);
+        console.log("photoUrl: " + this.photoUrl);
+        console.log("emailVerified: " + this.emailVerified);
+        console.log("uid: " + this.uid);
+      } else {
+        console.log("Não foi possível recolher as informações");
+        this.navCtrl.navigateRoot('/');
+      }
+    });
+  }
+
+  //sair
+  logout() {
+    firebase.auth().signOut().then(() => {
+      console.log("Sign-out successful");
+      this.navCtrl.navigateRoot('/login');
+    }).catch(async (error) => {
+      console.log("An error happened: " + error);
+      const toast = await this.toastCtrl.create({
+        message: error,
+        duration: 3000
+      });
+      toast.present();
+    });
+  }
+
+
+
+  //abrir popup de email
   async alterarEmailPopup() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -85,6 +125,30 @@ export class UserinfoPage implements OnInit {
     await alert.present();
   }
 
+  //alterar email
+  alterarEmail(email: string) {
+    firebase.auth().currentUser.verifyBeforeUpdateEmail(email)
+      .then(async () => {
+        console.log("Email de verificação enviado");
+        const toast = await this.toastCtrl.create({
+          message: "Email de verificação enviado",
+          duration: 3000
+        });
+        toast.present();
+      })
+      .catch(async (error) => {
+        console.log(error);
+        const toast = await this.toastCtrl.create({
+          message: error,
+          duration: 3000
+        });
+        toast.present();
+      });
+  }
+
+
+
+  //abrir popup de nome
   async alterarNomePopup() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -118,6 +182,34 @@ export class UserinfoPage implements OnInit {
     await alert.present();
   }
 
+  //alterar nome
+  alterarNome(name: string) {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log("Usuário logado");
+        user.updateProfile({
+          displayName: name
+        }).then((user) => {
+          console.log("Nome alterado");
+          this.getUserInfo();
+        }, async (error) => {
+          console.log("Ocorreu um erro: " + error);
+          const toast = await this.toastCtrl.create({
+            message: error,
+            duration: 3000
+          });
+          toast.present();
+        });
+      } else {
+        console.log("Nenhum usuário logado. Redirecionando à tela de login");
+        this.navCtrl.navigateRoot('/');
+      }
+    });
+  }
+
+
+
+  //abrir popup de senha
   async alterarSenhaPopup() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -151,6 +243,30 @@ export class UserinfoPage implements OnInit {
     await alert.present();
   }
 
+  //alterar senha
+  alterarSenha(senha: string) {
+    firebase.auth().currentUser.updatePassword(senha)
+      .then( async () => {
+        console.log("Senha alterada");
+        const toast = await this.toastCtrl.create({
+          message: "Senha alterada",
+          duration: 3000
+        });
+        toast.present();
+      })
+      .catch(async (error) => {
+        console.log("Ocorreu um erro: " + error);
+        const toast = await this.toastCtrl.create({
+          message: error,
+          duration: 3000
+        });
+        toast.present();
+      });
+  }
+
+
+
+  //abrir popup de deletar conta
   async deletarContaPopup() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -177,6 +293,25 @@ export class UserinfoPage implements OnInit {
     await alert.present();
   }
 
+  //deletar conta
+  deletarConta() {
+    firebase.auth().currentUser.delete()
+      .then(() => {
+        console.log("Conta deletada");
+      })
+      .catch(async (error) => {
+        console.log("Ocorreu um erro: " + error);
+        const toast = await this.toastCtrl.create({
+          message: error,
+          duration: 3000
+        });
+        toast.present();
+      });
+  }
+
+
+
+  //abrir camera
   tirarFoto() {
     let options: CameraOptions = {
       quality: 80,
@@ -204,6 +339,7 @@ export class UserinfoPage implements OnInit {
     })
   }
 
+  //salvar imagem no banco de dados
   uploadImage(name: string) {
     let ref = firebase.storage().ref("fotoPerfil/" + name);
     let uploadTask = ref.putString(this.image.split(',')[1], "base64");
@@ -216,14 +352,14 @@ export class UserinfoPage implements OnInit {
       uploadTask.snapshot.ref.getDownloadURL().then((url) => {
         console.log(url);
 
-        firebase.auth().onAuthStateChanged(function (user) {
+        firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             console.log("Usuário logado");
             user.updateProfile({
               photoURL: url
-            }).then(function (user) {
+            }).then((user) => {
               console.log("Imagem alterada");
-            }, async function (error) {
+            }, async (error) => {
               console.log("Ocorreu um erro: " + error);
               const toast = await this.toastCtrl.create({
                 message: error,
@@ -239,125 +375,6 @@ export class UserinfoPage implements OnInit {
 
       })
     })
-  }
-
-
-  alterarEmail(email: string) {
-    firebase.auth().currentUser.verifyBeforeUpdateEmail(email)
-      .then(function () {
-        console.log("Email de verificação enviado");
-      })
-      .catch(function (error) {
-        console.log("Ocorreu um erro: " + error);
-      });
-  }
-
-  alterarNome(name: string) {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        console.log("Usuário logado");
-        user.updateProfile({
-          displayName: name
-        }).then(function (user) {
-          console.log("Nome alterado");
-        }, async function (error) {
-          console.log("Ocorreu um erro: " + error);
-          const toast = await this.toastCtrl.create({
-            message: error,
-            duration: 3000
-          });
-          toast.present();
-        });
-      } else {
-        console.log("Nenhum usuário logado. Redirecionando à tela de login");
-        this.navCtrl.navigateRoot('/login');
-      }
-    });
-  }
-
-  alterarSenha(senha: string) {
-    firebase.auth().currentUser.updatePassword(senha)
-      .then(function () {
-        console.log("Senha alterada");
-      })
-      .catch(async function (error) {
-        console.log("Ocorreu um erro: " + error);
-        const toast = await this.toastCtrl.create({
-          message: error,
-          duration: 3000
-        });
-        toast.present();
-      });
-  }
-
-  deletarConta() {
-    firebase.auth().currentUser.delete()
-      .then(function () {
-        console.log("Conta deletada");
-      })
-      .catch(async function (error) {
-        console.log("Ocorreu um erro: " + error);
-        const toast = await this.toastCtrl.create({
-          message: error,
-          duration: 3000
-        });
-        toast.present();
-      });
-  }
-
-
-  getUserInfoObs() {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        console.log("Usuário logado");
-      } else {
-        console.log("Nenhum usuário logado. Redirecionando à tela de login");
-        this.navCtrl.navigateRoot('/login');
-      }
-    });
-  }
-
-  getUserInfo() {
-    console.log("Recolhendo informações do usuário logado");
-    this.name = "Carregando...";
-    this.email = "Carregando...";
-
-    firebase.auth().onAuthStateChanged(async (user) => {
-      if (user) {
-        this.name = user.displayName;
-        this.email = user.email;
-        this.photoUrl = user.photoURL;
-        this.emailVerified = user.emailVerified;
-        this.uid = user.uid;
-        console.log("name: " + this.name);
-        console.log("email: " + this.email);
-        console.log("photoUrl: " + this.photoUrl);
-        console.log("emailVerified: " + this.emailVerified);
-        console.log("uid: " + this.uid);
-      } else {
-        this.email = "Carregando..."
-        console.log("Não foi possível recolher as informações")
-        const toast = await this.toastCtrl.create({
-          message: "Não foi possível recolher as informações",
-          duration: 3000
-        });
-        toast.present();
-      }
-    });
-  }
-
-  logout() {
-    firebase.auth().signOut().then(() => {
-      console.log("Sign-out successful");
-      this.navCtrl.navigateRoot('/login');
-    }).catch(async (error) => {
-      console.log("An error happened: " + error);
-      const toast = await this.toastCtrl.create({
-        message: error,
-        duration: 3000
-      });
-      toast.present();
-    });
   }
 
 }

@@ -1,0 +1,225 @@
+<ion-header [translucent]="false">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button auto-hide="false">
+      </ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Nosso Time
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button  (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-menu side="start" menuId="first" contentId="main">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>iLawyer</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item href="/userinfo">
+        <ion-avatar slot="end">
+          <img src="{{ photoUrl }}">
+        </ion-avatar>
+        <ion-label>
+          <h3>{{name}}</h3>
+          <p>{{email}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item href="/feed/">Pagina Inicial</ion-item>
+      <ion-item href="/agenda/">Agenda</ion-item>
+      <ion-item href="/userinfo/">Editar Perfil</ion-item>
+      <ion-item href="/nosso-time/">Nosso Time</ion-item>
+      <ion-item href="https://advocaciaac.adv.br/">Nosso Site</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-router-outlet id="main"></ion-router-outlet>
+
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Profissionais</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Além da atuação em conjunto com profissionais de renome e especializados nas áreas de atuações elencadas, com
+      Escritórios de Advocacia e Escritórios de Contabilidades parceiros, “<strong>AC Advocacia</strong>” conta com uma equipe interna
+      representada pelos seguintes advogados:
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img src="https://advocaciaac.adv.br/wp-content/uploads/2020/06/FOTO-1080x1080.jpg" />
+    <ion-card-header>
+      <ion-card-subtitle>OAB/SP 310.396</ion-card-subtitle>
+      <ion-card-title>Aluísio Bernardes Cortez</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+
+      <strong>Pós Graduado<br></strong>Direito e Processo do Trabalho: Universidade Anhanguera –
+      Uniderp.<br>Advocacia Trabalhista: Universidade Anhanguera – Uniderp<br>Prática e Atuação Trabalhista pela FGV
+      &#8211; Fundação Getúlio Vargas
+      <br />
+      <br />
+      <strong>Cursos de Extensão Curricular</strong>
+      <ul>
+        <li>Liquidação e Cálculos de Sentença Trabalhista: ESA-OAB Mogi Mirim;</li>
+        <li>Curso de Atualização e Prática Trabalhista: Rede de Ensino LFG;</li>
+        <li>Intensivo Carreira Trabalhista / Concursos Públicos: Rede de Ensino LFG;</li>
+        <li>Curso Revisional Geral das Áreas Jurídicas: Rede de Ensino LFG;</li>
+        <li>Cumprimento de Sentença e Execução de Título Extrajudicial no Processo Civil: ESA-OAB Mogi Mirim;</li>
+        <li>Direito das Sucessões: ESA-OAB Mogi Mirim;</li>
+        <li>Prática Trabalhista: ESA-OAB Mogi Mirim;</li>
+        <li>Intensivo Regular TRT 15º Região: Rede de Ensino LFG &#8211; Duração de 2 semestres</li>
+        <li>Atuação na Área Tributária: ESA-OAB Mogi Mirim;</li>
+      </ul>
+      <br />
+      <ion-button size="small">Agendar horário</ion-button>
+      <ion-button size="small" href="http://wa.me/5519997132723">
+        <ion-icon name="logo-whatsapp"></ion-icon>&ensp;Entrar em contato
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img src="https://advocaciaac.adv.br/wp-content/uploads/2020/06/IMG_7723.jpg" />
+    <ion-card-header>
+      <ion-card-subtitle>OAB/SP 106.222</ion-card-subtitle>
+      <ion-card-title>José Carlos Campos Adorno</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Experiência e vasta atuação no Direito Imobiliário, Empresarial e Tributário com efetiva atuação e extensão
+      curricular que ultrapassam 25 anos de advocacia.
+      <br />
+      <br />
+      <ion-button size="small">Agendar horário</ion-button>
+      <ion-button size="small" href="http://wa.me/5519997132723">
+        <ion-icon name="logo-whatsapp"></ion-icon>&ensp;Entrar em contato
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img src="https://advocaciaac.adv.br/wp-content/uploads/2020/08/JO%C3%83O-EDUARDO-VICENTE-ok.jpg" />
+    <ion-card-header>
+      <ion-card-subtitle>OAB/SP 112.995</ion-card-subtitle>
+      <ion-card-title>João Eduardo Vicente</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Graduado pela Fundação Pinhalense de Ensino em 1991, Pós-Graduado em Direito Processual Civil pela Pontifícia
+      Universidade Católica de Campinas, em fase de conclusão Mestrado em Processo Civil pela Universidade Metodista de
+      Piracicaba, graduado em Matemática pela Faculdade de Educação de Ciências e Letras de Moji Mirim, com vários
+      cursos de extensão universitária especialmente em Direito Bancário.
+      <br />
+      <br />
+      <ion-button size="small">Agendar horário</ion-button>
+      <ion-button size="small" href="http://wa.me/5519997132723">
+        <ion-icon name="logo-whatsapp"></ion-icon>&ensp;Entrar em contato
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img src="https://advocaciaac.adv.br/wp-content/uploads/2020/08/THAIN%C3%81-DA-CUNHA-ANDRADE-OK.jpg" />
+    <ion-card-header>
+      <ion-card-subtitle>OAB/SP 424.843</ion-card-subtitle>
+      <ion-card-title>Thainá da Cunha Andrade</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Graduada em direito pela Associação Educacional e Assistencial Santa Lúcia – Faculdade Santa Lúcia. Atuação
+      profissional na área Trabalhista, Empresarial, Cível, Contratos em geral, direito imobiliário e consumidor.
+      <br />
+      <br />
+      <ion-button size="small">Agendar horário</ion-button>
+      <ion-button size="small" href="http://wa.me/5519997132723">
+        <ion-icon name="logo-whatsapp"></ion-icon>&ensp;Entrar em contato
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img src="https://advocaciaac.adv.br/wp-content/uploads/2020/08/FERNANDA-PRETO-OLIVEIRA-ok.jpg" />
+    <ion-card-header>
+      <ion-card-subtitle>OAB/SP 437.892</ion-card-subtitle>
+      <ion-card-title>Fernanda Preto de Oliveira</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+
+      Graduada em direito pela Associação Educacional e Assistencial Santa Lúcia – Faculdade Santa Lúcia. Atuação
+      profissional na área trabalhista, Cível, Contratos em geral, direito imobiliário e consumidor.
+      <br />
+      <br />
+      <strong>Cursos de extensão curricular</strong>
+      <br />
+      Prática da Advocacia Trabalhista para Empregado e Empregador : ESA &#8211; OAB Mogi Mirim<br>Negociação e Formação
+      do Contrato : FGV &#8211; Fundação Getúlio Vargas<br>Direito de Família : FGV &#8211; Fundação Vargas
+      <br />
+      <br />
+      <ion-button size="small">Agendar horário</ion-button>
+      <ion-button size="small" href="http://wa.me/5519997132723">
+        <ion-icon name="logo-whatsapp"></ion-icon>&ensp;Entrar em contato
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img src="https://advocaciaac.adv.br/wp-content/uploads/2020/12/Mirella.jpeg" />
+    <ion-card-header>
+      <ion-card-subtitle>OAB/SP 442.096</ion-card-subtitle>
+      <ion-card-title>Mirella Caroline Moreira Oliveira</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Graduada em direito pelo Centro Universitário de Jaguariúna – UniFaj. Atuação profissional na área Trabalhista,
+      Empresarial, Cível, Contratos em geral, direito imobiliário e consumidor.
+      <br />
+      <br />
+      <ion-button size="small">Agendar horário</ion-button>
+      <ion-button size="small" href="http://wa.me/5519997132723">
+        <ion-icon name="logo-whatsapp"></ion-icon>&ensp;Entrar em contato
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img src="https://advocaciaac.adv.br/wp-content/uploads/2020/08/GABRIELLE-F.-PROCOPIO-ok.jpg" />
+    <ion-card-header>
+      <ion-card-title>Gabrielle Fernanda Procópio da Silva</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Graduada em direito pela Associação Educacional e Assistencial Santa Lúcia – Faculdade Santa Lúcia. Atuação
+      profissional na área Trabalhista, Empresarial, Cível, Contratos em geral, direito imobiliário e consumidor.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img src="https://advocaciaac.adv.br/wp-content/uploads/2020/08/BEATRIZ-DUARTE-BUBULLA-ok.jpg" />
+    <ion-card-header>
+      <ion-card-title>Beatriz Duarte Bubulla</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Profissional Assistente na área jurídica extrajudicial e judicial. Com experiência em trabalhos intermediários
+      junto aos clientes e aos advogados; atuação assistencial de caráter consensual e contencioso em geral e em prol do
+      Escritório “AC Advocacia”.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img src="https://advocaciaac.adv.br/wp-content/uploads/2021/07/ana.jpg" />
+    <ion-card-header>
+      <ion-card-title>Ana Leiza Alteia </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Profissional Assistente na área jurídica extrajudicial e judicial. Com experiência em trabalhos intermediários
+      junto aos clientes e aos advogados; atuação assistencial de caráter consensual e contencioso em geral e em prol do
+      Escritório “AC Advocacia”.
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

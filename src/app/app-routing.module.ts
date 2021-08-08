@@ -34,6 +34,10 @@ const routes: Routes = [
     path: 'userinfo',
     loadChildren: () => import('./userinfo/userinfo.module').then( m => m.UserinfoPageModule)
   },
+  {
+    path: 'nosso-time',
+    loadChildren: () => import('./nosso-time/nosso-time.module').then( m => m.NossoTimePageModule)
+  },
 
 
 ];

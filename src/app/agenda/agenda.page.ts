@@ -1,9 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import firebase from 'firebase';
+import * as moment from 'moment';
+import {
+  IonInfiniteScroll,
+  MenuController,
+  NavController,
+  AlertController,
+  ToastController,
+  LoadingController,
+  ActionSheetController
+} from '@ionic/angular';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
 import { ModalController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
 import { MarcarHorarioPage } from '../marcar-horario/marcar-horario.page';
-import firebase from 'firebase';
-import { MenuController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-agenda',
@@ -14,6 +24,7 @@ import { MenuController, NavController } from '@ionic/angular';
 export class AgendaPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
+  //calendario
   eventSource = []; // API com BD
   viewTitle: string;
   calendar = {
@@ -33,50 +44,68 @@ export class AgendaPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private menu: MenuController,
-    public navCtrl: NavController,) {
+    public navCtrl: NavController,
+    public alertController: AlertController,
+    public toastCtrl: ToastController,
+    public actionSheetController: ActionSheetController,
+    private camera: Camera) {
 
-    this.getUserInfoObs();
   }
 
   ngOnInit() {
+    this.getUserInfo();
   }
-  
+
+  //abrir menu
   openFirst() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
   }
 
-  getUserInfoObs() {
-    firebase.auth().onAuthStateChanged(function(user) {
+  //obter informações do usuário
+  getUserInfo() {
+    console.log("Recolhendo as informações do usuário");
+    this.name = "Carregando...";
+    this.email = "Carregando...";
+
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log("Usuário logado");
+        this.name = user.displayName;
+        this.email = user.email;
+        this.photoUrl = user.photoURL;
+        this.emailVerified = user.emailVerified;
+        this.uid = user.uid;
+        console.log("Usuário " + this.name + " logado");
+        console.log("email: " + this.email);
+        console.log("photoUrl: " + this.photoUrl);
+        console.log("emailVerified: " + this.emailVerified);
+        console.log("uid: " + this.uid);
       } else {
-        console.log("Nenhum usuário logado. Redirecionando à tela de login");
-        this.navCtrl.navigateRoot('/login');
+        console.log("Não foi possível recolher as informações");
+        this.navCtrl.navigateRoot('/');
       }
     });
   }
 
-  getUserInfo(){
-    console.log("Recolhendo informações do usuário logado");
-    var user = firebase.auth().currentUser;
-    if (user != null) {
-    this.name = user.displayName;
-    this.email = user.email;
-    this.photoUrl = user.photoURL;
-    this.emailVerified = user.emailVerified;
-    this.uid = user.uid;
-    console.log("name: " + this.name);
-    console.log("email: " + this.email);
-    console.log("photoUrl: " + this.photoUrl);
-    console.log("emailVerified: " + this.emailVerified);
-    console.log("uid: " + this.uid);
-    }else{
-      this.email = "Carregando..."
-      console.log("Não foi possível recolher as informações")
-    }
+  //sair
+  logout() {
+    firebase.auth().signOut().then(() => {
+      console.log("Sign-out successful");
+      this.navCtrl.navigateRoot('/login');
+    }).catch(async (error) => {
+      console.log("An error happened: " + error);
+      const toast = await this.toastCtrl.create({
+        message: error,
+        duration: 3000
+      });
+      toast.present();
+    });
   }
-  
+
+
+
+  //calendario
+
   next(){
     this.myCal.slideNext()
   }
