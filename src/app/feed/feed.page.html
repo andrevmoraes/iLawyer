@@ -8,7 +8,7 @@
       Página Inicial
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button  (click)="logout()">
+      <ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -49,10 +49,32 @@
 </ion-fab>
 
 <ion-content>
+
+  <center><img src="https://advocaciaac.adv.br/wp-content/uploads/2020/06/cropped-advocaciaac-logo-1.png"></center>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button color="light" expand="block" href="/agenda/">Agenda</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button color="light" expand="block" href="/userinfo/">Editar Perfil</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="light" expand="block" href="/nosso-time/">Nosso Time</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button color="light" expand="block" href="https://advocaciaac.adv.br/">Nosso Site</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-card *ngFor="let post of posts" (click)="presentActionSheet(post.id, post.data().owner)">    
+  <ion-card *ngFor="let post of posts" (click)="presentActionSheet(post.id, post.data().owner)">
     <ion-card-content>
       <h2>{{ post.data().owner_name }}</h2>
       <p>há {{ ago(post.data().created) }}</p>

@@ -315,13 +315,13 @@ export class UserinfoPage implements OnInit {
   tirarFoto() {
     let options: CameraOptions = {
       quality: 80,
-      sourceType: this.camera.PictureSourceType.CAMERA,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.PNG,
+      encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
-      targetHeight: 512,
-      targetWidth: 512,
+      targetHeight: 400,
+      targetWidth: 300,
       allowEdit: false
     }
 
@@ -359,6 +359,7 @@ export class UserinfoPage implements OnInit {
               photoURL: url
             }).then((user) => {
               console.log("Imagem alterada");
+              this.getUserInfo();
             }, async (error) => {
               console.log("Ocorreu um erro: " + error);
               const toast = await this.toastCtrl.create({
