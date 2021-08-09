@@ -73,7 +73,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Data e horário</ion-label>
-      <ion-datetime max='2023' min='2021' display-format="DD/MM/YYYY HH:mm" value="2022-03-13T11:15Z"></ion-datetime>
+      <ion-datetime max={{calendar.currentDate.getFullYear()+5}} min={{calendar.currentDate.getFullYear()}} display-format="DD/MM/YYYY HH:mm" value={{calendar.currentDate}}></ion-datetime>
     </ion-item>
     <ion-button color="light" expand="block">Anexar arquivo</ion-button>
     <ion-button color="success" expand="block">Agendar</ion-button>

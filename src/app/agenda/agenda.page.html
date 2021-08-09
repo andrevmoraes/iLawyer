@@ -8,7 +8,7 @@
       Agenda
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button  (click)="logout()">
+      <ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -42,13 +42,26 @@
 </ion-menu>
 <ion-router-outlet id="main"></ion-router-outlet>
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button  href="/marcar-horario">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
 
 <ion-content>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="openCalModal()">
+        <ion-icon name="calendar"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="createRandomEvents()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="removeEvents()">
+        <ion-icon name="remove"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
   <ion-row>
     <!-- Mover pra trás -->
     <ion-col size="2">
@@ -56,11 +69,11 @@
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-col>
- 
+
     <ion-col size="8" class="ion-text-center">
       <h2>{{ viewTitle }}</h2>
     </ion-col>
- 
+
     <!-- Mover pra frente -->
     <ion-col size="2">
       <ion-button fill="clear" (click)="next()">
@@ -69,7 +82,20 @@
     </ion-col>
   </ion-row>
 
-  <calendar [eventSource]="eventSource"
+  <ion-segment [(ngModel)]="calendar.mode">
+    <ion-segment-button value="month">
+      <ion-label>Mês</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="week">
+      <ion-label>Semana</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="day">
+      <ion-label>Dia</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <calendar
+  [eventSource]="eventSource"
   [locale]="calendar.locale"
   [calendarMode]="calendar.mode"
   [currentDate]="calendar.currentDate"
@@ -78,7 +104,6 @@
   endHour="18"
   step="30"
   startingDayWeek="1"
-  [monthviewDisplayEventTemplate]="template"
-  >
+  [monthviewDisplayEventTemplate]="template">
   </calendar>
 </ion-content>

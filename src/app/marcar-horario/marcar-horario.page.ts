@@ -11,6 +11,7 @@ import {
   ActionSheetController
 } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
+import { CalendarComponent } from 'ionic2-calendar';
 
 @Component({
   selector: 'app-marcar-horario',
@@ -19,6 +20,17 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
 })
 
 export class MarcarHorarioPage implements OnInit {
+  @ViewChild(CalendarComponent) myCal: CalendarComponent;
+
+  //calendario
+  eventSource = []; // API com BD
+  viewTitle: string;
+  calendar = {
+    mode: 'month',
+    currentDate: new Date(),
+    locale:'pt-BR',
+  };
+  selectedDate: Date;
 
   //firebase auth
   name: string;
