@@ -51,8 +51,11 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-row>
-    <!-- Mover pra trás -->
+  <!--
+
+  <ion-row>   -->
+  <!-- Mover pra trás -->
+  <!--
     <ion-col size="2">
       <ion-button fill="clear" (click)="back()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
@@ -62,8 +65,9 @@
     <ion-col size="8" class="ion-text-center">
       <h2>{{ viewTitle }}</h2>
     </ion-col>
-
-    <!-- Mover pra frente -->
+-->
+  <!-- Mover pra frente -->
+  <!--
     <ion-col size="2">
       <ion-button fill="clear" (click)="next()">
         <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
@@ -83,8 +87,6 @@
     </ion-segment-button>
   </ion-segment>
 
-
-
   
   <calendar
   [eventSource]="eventSource"
@@ -92,7 +94,7 @@
   [calendarMode]="calendar.mode"
   [currentDate]="calendar.currentDate"
   (onTitleChanged)="onViewTitleChanged($event)"
-  (onChange)="onChange($event)"
+  (onTimeSelected)="onTimeSelected($event)"
   starHour="6"
   endHour="18"
   step="30"
@@ -100,15 +102,23 @@
   [monthviewDisplayEventTemplate]="template">
   </calendar>
 
+-->
+
   <ion-card *ngFor="let agenda of agendas">
+
+    <ion-card-header>
+      <ion-card-title>{{ agenda.data().title }}</ion-card-title><br/>
+      <ion-card-subtitle>De {{ ago(agenda.data().startTime) }}</ion-card-subtitle>
+      <ion-card-subtitle>Até {{ ago(agenda.data().startTime) }}</ion-card-subtitle>
+      <ion-card-subtitle>{{ agenda.data().adv }}</ion-card-subtitle>
+    </ion-card-header>
+
     <ion-card-content>
-      <p>Título: {{ agenda.data().title }}</p>
-      <p>Descrição: {{ agenda.data().desc }}</p>
-      <p>Advogado: {{ agenda.data().adv }}</p>
-      <p>Início: {{ agenda.data().startTime }}</p>
-      <p>Agendado por: {{ agenda.data().owner_name }}</p>
-      <p>Agendado em: {{ agenda.data().created }}</p>
+      {{ agenda.data().desc }} <br/><br/>
+      Agendado em: {{ ago(agenda.data().created) }} <br/>
+      Agendado por: {{ agenda.data().owner_name }}
     </ion-card-content>
+
   </ion-card>
 
 </ion-content>

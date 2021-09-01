@@ -28,9 +28,10 @@ export class AgendaPage implements OnInit {
   calendar = {
     mode: 'month',
     currentDate: new Date(),
-    locale:'pt-BR',
+    locale: 'pt-BR',
   };
-  selectedDate: Date;  
+
+  selectedDate: Date;
 
   title: string;
   desc: string;
@@ -50,16 +51,16 @@ export class AgendaPage implements OnInit {
   };
   modalReady = false;
 
-   //firebase auth
-   name: string;
-   email: string;
-   photoUrl: string;
-   uid: string;
-   emailVerified: boolean;
-   
-   text: string;
-   agendas: any[] = [];
-  
+  //firebase auth
+  name: string;
+  email: string;
+  photoUrl: string;
+  uid: string;
+  emailVerified: boolean;
+
+  text: string;
+  agendas: any[] = [];
+
   constructor(
     private modalCtrl: ModalController,
     private menu: MenuController,
@@ -72,7 +73,6 @@ export class AgendaPage implements OnInit {
 
   ngOnInit() {
     this.getUserInfo();
-    this.obterAgenda();
     console.log("DATA SELECIONADA: " + this.selectedDate);
   }
 
@@ -100,6 +100,7 @@ export class AgendaPage implements OnInit {
         console.log("photoUrl: " + this.photoUrl);
         console.log("emailVerified: " + this.emailVerified);
         console.log("uid: " + this.uid);
+        this.obterAgenda();
       } else {
         console.log("Não foi possível recolher as informações");
         this.navCtrl.navigateRoot('/');
@@ -126,31 +127,31 @@ export class AgendaPage implements OnInit {
 
   //calendario
 
-  next(){
+  next() {
     this.myCal.slideNext()
   }
 
-  back(){
+  back() {
     this.myCal.slidePrev()
   }
 
   //altera o titulo para o nome do mês
-  onViewTitleChanged(title){
+  onViewTitleChanged(title) {
     this.viewTitle = title;
     console.log(this.viewTitle);
   }
 
- // onChange(event){
- //   console.log("onchange event called");
- //   console.log(moment(this.date._d).format("YYYY-MM-DD"));
- // }
-  
+  // onChange(event){
+  //   console.log("onchange event called");
+  //   console.log(moment(this.date._d).format("YYYY-MM-DD"));
+  // }
+
   // Calendar event was clicked
   async onEventSelected(event) {
     // Use Angular date pipe for conversion
     let start = formatDate(event.startTime, 'medium', this.locale);
     let end = formatDate(event.endTime, 'medium', this.locale);
- 
+
     const alert = await this.alertController.create({
       header: event.title,
       subHeader: event.desc,
@@ -159,11 +160,11 @@ export class AgendaPage implements OnInit {
     });
     alert.present();
   }
- 
-   //obter postagens - baseado no limite (pageSize)
-   obterAgenda() {
+
+  //obter postagens - baseado no limite (pageSize)
+  obterAgenda() {
     this.agendas = []
-    let query = firebase.firestore().collection("agenda").orderBy("startTime", "desc");
+    let query = firebase.firestore().collection("agenda").where("owner", "==", this.uid);
     query.get()
       .then((docs) => {
         docs.forEach((doc) => {
@@ -174,5 +175,17 @@ export class AgendaPage implements OnInit {
         console.log(err);
       })
   }
+
+  onTimeSelected($event) {
+    this.selectedDate = $event.selectedTime
+    console.log(this.selectedDate);
+  }
+
+
+    //obter tempo da postagem
+    ago(time) {
+      var hrs = moment(time.toDate()).format("DD/MM/YYYY HH:mm");
+      return hrs;
+    }
 
 }

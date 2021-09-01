@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./calendario.page.scss'],
 })
 export class CalendarioPage implements OnInit {
+  date: string;
+  type: string;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onChange($event: any) {
+    console.log($event);
   }
 
 }
