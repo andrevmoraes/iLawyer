@@ -38,6 +38,10 @@ const routes: Routes = [
     path: 'nosso-time',
     loadChildren: () => import('./nosso-time/nosso-time.module').then( m => m.NossoTimePageModule)
   },
+  {
+    path: 'calendario',
+    loadChildren: () => import('./calendario/calendario.module').then( m => m.CalendarioPageModule)
+  },
 
 
 ];

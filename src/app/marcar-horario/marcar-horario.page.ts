@@ -1,16 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import firebase from 'firebase';
-import * as moment from 'moment';
 import {
-  IonInfiniteScroll,
   MenuController,
   NavController,
-  AlertController,
   ToastController,
-  LoadingController,
-  ActionSheetController
+  ModalController
 } from '@ionic/angular';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
 import { CalendarComponent } from 'ionic2-calendar';
 
 @Component({
@@ -22,15 +17,11 @@ import { CalendarComponent } from 'ionic2-calendar';
 export class MarcarHorarioPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
-  //calendario
-  eventSource = []; // API com BD
-  viewTitle: string;
-  calendar = {
-    mode: 'month',
-    currentDate: new Date(),
-    locale:'pt-BR',
-  };
-  selectedDate: Date;
+  title: string;
+  desc: string;
+  adv: string;
+  startTime: string;
+  currentDate = new Date();
 
   //firebase auth
   name: string;
@@ -45,8 +36,8 @@ export class MarcarHorarioPage implements OnInit {
     public toastCtrl: ToastController) {
 
   }
-
-  ngOnInit() {
+  
+  ngOnInit(): void {
     this.getUserInfo();
   }
 
@@ -95,6 +86,24 @@ export class MarcarHorarioPage implements OnInit {
       toast.present();
     });
   }
-
+  
+  //salvar agendamento no banco de dados
+  agendar() {
+    firebase.firestore().collection("agenda").add({
+      title: this.title,
+      desc: this.desc,
+      adv: this.adv,
+      startTime: new Date(this.startTime),
+      created: firebase.firestore.FieldValue.serverTimestamp(),
+      owner: firebase.auth().currentUser.uid,
+      owner_name: firebase.auth().currentUser.displayName
+    }).then((doc) => {
+      console.log(doc)
+      this.navCtrl.navigateRoot('/agenda');
+      //this.getPosts();
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 
 }

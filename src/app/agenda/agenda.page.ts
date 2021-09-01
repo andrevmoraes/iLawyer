@@ -1,20 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import firebase from 'firebase';
-import * as moment from 'moment';
 import {
-  IonInfiniteScroll,
   MenuController,
   NavController,
   AlertController,
   ToastController,
-  LoadingController,
   ActionSheetController
 } from '@ionic/angular';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
 import { ModalController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
-import { MarcarHorarioPage } from '../marcar-horario/marcar-horario.page';
 import { formatDate } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-agenda',
@@ -36,12 +32,33 @@ export class AgendaPage implements OnInit {
   };
   selectedDate: Date;  
 
+  title: string;
+  desc: string;
+  adv: string;
+  startTime: string;
+  currentDate = new Date();
+
+  events: any;
+
+  event = {
+    title: '',
+    desc: '',
+    startTime: null,
+    endTime: '',
+    adv: '',
+    allDay: false
+  };
+  modalReady = false;
+
    //firebase auth
    name: string;
    email: string;
    photoUrl: string;
    uid: string;
    emailVerified: boolean;
+   
+   text: string;
+   agendas: any[] = [];
   
   constructor(
     private modalCtrl: ModalController,
@@ -49,14 +66,14 @@ export class AgendaPage implements OnInit {
     public navCtrl: NavController,
     public alertController: AlertController,
     public toastCtrl: ToastController,
-    public actionSheetController: ActionSheetController,
-    private camera: Camera) {
+    public actionSheetController: ActionSheetController) {
 
   }
 
   ngOnInit() {
     this.getUserInfo();
-    console.log(this.selectedDate);
+    this.obterAgenda();
+    console.log("DATA SELECIONADA: " + this.selectedDate);
   }
 
   //abrir menu
@@ -122,41 +139,12 @@ export class AgendaPage implements OnInit {
     this.viewTitle = title;
     console.log(this.viewTitle);
   }
-  
-    // Tirar isso
-  async openCalModal() {
-    const modal = await this.modalCtrl.create({
-      component: MarcarHorarioPage,
-      backdropDismiss: false
-    });
-   
-    await modal.present();
-    modal.onDidDismiss().then((result) => {
-      if (result.data && result.data.event) {
-        let event = result.data.event;
-        if (event.allDay) {
-          let start = event.startTime;
-          event.startTime = new Date(
-            Date.UTC(
-              start.getUTCFullYear(),
-              start.getUTCMonth(),
-              start.getUTCDate()
-            )
-          );
-          event.endTime = new Date(
-            Date.UTC(
-              start.getUTCFullYear(),
-              start.getUTCMonth(),
-              start.getUTCDate() + 1
-            )
-          );
-        }
-        this.eventSource.push(result.data.event);
-        this.myCal.loadEvents();
-      }
-    });
-  }
 
+ // onChange(event){
+ //   console.log("onchange event called");
+ //   console.log(moment(this.date._d).format("YYYY-MM-DD"));
+ // }
+  
   // Calendar event was clicked
   async onEventSelected(event) {
     // Use Angular date pipe for conversion
@@ -172,69 +160,19 @@ export class AgendaPage implements OnInit {
     alert.present();
   }
  
-  createRandomEvents() {
-    var events = [];
-    for (var i = 0; i < 50; i += 1) {
-      var date = new Date();
-      var eventType = Math.floor(Math.random() * 2);
-      var startDay = Math.floor(Math.random() * 90) - 45;
-      var endDay = Math.floor(Math.random() * 2) + startDay;
-      var startTime;
-      var endTime;
-      if (eventType === 0) {
-        startTime = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth(),
-            date.getUTCDate() + startDay
-          )
-        );
-        if (endDay === startDay) {
-          endDay += 1;
-        }
-        endTime = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth(),
-            date.getUTCDate() + endDay
-          )
-        );
-        events.push({
-          title: 'All Day - ' + i,
-          startTime: startTime,
-          endTime: endTime,
-          allDay: true,
-        });
-      } else {
-        var startMinute = Math.floor(Math.random() * 24 * 60);
-        var endMinute = Math.floor(Math.random() * 180) + startMinute;
-        startTime = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate() + startDay,
-          0,
-          date.getMinutes() + startMinute
-        );
-        endTime = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate() + endDay,
-          0,
-          date.getMinutes() + endMinute
-        );
-        events.push({
-          title: 'Event - ' + i,
-          startTime: startTime,
-          endTime: endTime,
-          allDay: false,
-        });
-      }
-    }
-    this.eventSource = events;
+   //obter postagens - baseado no limite (pageSize)
+   obterAgenda() {
+    this.agendas = []
+    let query = firebase.firestore().collection("agenda").orderBy("startTime", "desc");
+    query.get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          this.agendas.push(doc);
+        })
+        console.log(this.agendas);
+      }).catch((err) => {
+        console.log(err);
+      })
   }
- 
-  removeEvents() {
-    this.eventSource = [];
-  }  
 
 }

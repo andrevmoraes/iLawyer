@@ -1,0 +1,12 @@
+curl -X PUT -d '{
+  "eventos": [
+    "nameAlan Turidadasng",
+    "birthdayJune 23, 1912",
+    "teste"
+  ]
+}' 'https://ilawyer-db-default-rtdb.firebaseio.com/.json'
+
+
+###
+
+curl 'https://ilawyer-db-default-rtdb.firebaseio.com/eventos.json?print=pretty'
