@@ -8,7 +8,7 @@
       Agendamento
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button  (click)="logout()">
+      <ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -43,15 +43,14 @@
 <ion-router-outlet id="main"></ion-router-outlet>
 
 
-<ion-content>
- 
+<ion-content fullscreen>
+  <br />
   <ion-list>
-      
     <ion-item>
       <ion-input placeholder="Título" [(ngModel)]="title"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input placeholder="Descrição" [(ngModel)]="desc"></ion-input>
+      <ion-input type='textarea' placeholder="Descrição" [(ngModel)]="desc"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Advogado</ion-label>
@@ -65,13 +64,14 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label>Data e horário</ion-label>
-      <ion-datetime max={{currentDate.getFullYear()+5}} min={{currentDate.getFullYear()}} display-format="DD/MM/YYYY HH:mm" value={{currentDate}} [(ngModel)]="startTime"></ion-datetime>
+      <ion-label>Data e Hora</ion-label>
+      <ion-datetime max={{currentDate.getFullYear()+5}} min={{currentDate.getFullYear()}}
+        display-format="DD/MM/YYYY HH:mm" [(ngModel)]="startTime"></ion-datetime>
     </ion-item>
-    <!--  <ion-button color="light" expand="block">Anexar arquivo</ion-button>   -->
+    <br /><br /><br />
+    <ion-button color="light" expand="block" (click)="tirarFoto()">Anexar imagem</ion-button>
     <ion-button color="success" expand="block" (click)="agendar()">Agendar</ion-button>
     <ion-button color="danger" expand="block" href="/agenda/">Cancelar</ion-button>
-    
-  </ion-list>
 
+  </ion-list>
 </ion-content>

@@ -104,21 +104,22 @@
 
 -->
 
-  <ion-card *ngFor="let agenda of agendas">
-
+  <ion-card *ngFor="let agenda of agendas"  (click)="menuAgendamentos(agenda.id, agenda.data().owner)">
+    <center>
     <ion-card-header>
-      <ion-card-title>{{ agenda.data().title }}</ion-card-title><br/>
-      <ion-card-subtitle>De {{ ago(agenda.data().startTime) }}</ion-card-subtitle>
-      <ion-card-subtitle>Até {{ ago(agenda.data().startTime) }}</ion-card-subtitle>
-      <ion-card-subtitle>{{ agenda.data().adv }}</ion-card-subtitle>
+      <ion-card-title>{{ agenda.data().title }}</ion-card-title>
+      <br/><ion-card-subtitle>Adv. {{ agenda.data().adv }}</ion-card-subtitle>
+      <ion-card-subtitle>{{ ago(agenda.data().startTime) }} - {{ ateHorarioCalculo(agenda.data().startTime) }}</ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
-      {{ agenda.data().desc }} <br/><br/>
-      Agendado em: {{ ago(agenda.data().created) }} <br/>
-      Agendado por: {{ agenda.data().owner_name }}
-    </ion-card-content>
 
+      {{ agenda.data().desc }} <br/><br/>
+
+      <img src="{{ agenda.data().imagem }}">
+      <h3>Criado em: {{ ago(agenda.data().created) }}</h3>
+    </ion-card-content>
+  </center>
   </ion-card>
 
 </ion-content>

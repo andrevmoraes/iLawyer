@@ -123,31 +123,24 @@ export class AgendaPage implements OnInit {
     });
   }
 
-
-
   //calendario
-
   next() {
     this.myCal.slideNext()
   }
 
+  //calendario
   back() {
     this.myCal.slidePrev()
   }
 
   //altera o titulo para o nome do mês
-  onViewTitleChanged(title) {
+  onViewTitleChanged(title: string) {
     this.viewTitle = title;
     console.log(this.viewTitle);
   }
 
-  // onChange(event){
-  //   console.log("onchange event called");
-  //   console.log(moment(this.date._d).format("YYYY-MM-DD"));
-  // }
-
   // Calendar event was clicked
-  async onEventSelected(event) {
+  async onEventSelected(event: { startTime: string | number | Date; endTime: string | number | Date; title: any; desc: any; }) {
     // Use Angular date pipe for conversion
     let start = formatDate(event.startTime, 'medium', this.locale);
     let end = formatDate(event.endTime, 'medium', this.locale);
@@ -176,16 +169,64 @@ export class AgendaPage implements OnInit {
       })
   }
 
-  onTimeSelected($event) {
+  //dia selecionado no calendario
+  onTimeSelected($event: { selectedTime: Date; }) {
     this.selectedDate = $event.selectedTime
     console.log(this.selectedDate);
   }
 
+  //transforma tempo de inicio
+  ago(time: { toDate: () => moment.MomentInput; }) {
+    var hrs = moment(time.toDate()).format("DD/MM/YYYY HH:mm");
+    return hrs;
+  }
 
-    //obter tempo da postagem
-    ago(time) {
-      var hrs = moment(time.toDate()).format("DD/MM/YYYY HH:mm");
-      return hrs;
-    }
+  //adiciona uma hora e exibe como tempo de até
+  ateHorarioCalculo(timex: { toDate: () => moment.MomentInput; }) {
+    var hrs = moment(timex.toDate()).add(1, 'hour').format("HH:mm");
+    return hrs;
+  }
+
+  //excluir uma postagem
+  async menuAgendamentos(dataid: string, userpost: string) {
+    const actionSheet = await this.actionSheetController.create({
+      cssClass: 'my-custom-class',
+      buttons: [
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          //icon: 'trash',
+          handler: async () => {
+            console.log("lidando...");
+            var user = firebase.auth().currentUser;
+            console.log("usuario: " + user + " - " + user.uid);
+            if (userpost == user.uid) {
+              console.log('Delete clicked: ' + dataid);
+              firebase.firestore().collection("agenda").doc(dataid).delete().then(() => {
+                this.obterAgenda();
+              })
+            } else {
+              console.log("Você só pode excluir os seus agendamentos");
+              const toast = this.toastCtrl.create({
+                message: "Você só pode excluir os seus agendamentos",
+                duration: 3000
+              });
+              (await toast).present();
+            };
+          }
+        }, {
+          text: 'Cancelar',
+          //icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]
+    });
+    await actionSheet.present();
+
+    const { role } = await actionSheet.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
+  }
 
 }

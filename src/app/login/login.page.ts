@@ -17,7 +17,7 @@ export class LoginPage {
   constructor(public toastCtrl: ToastController, public navCtrl: NavController) {
   }
 
-  
+
   login() {
     firebase.auth().signInWithEmailAndPassword(this.email, this.password)
       .then(async (user) => {
@@ -28,7 +28,13 @@ export class LoginPage {
           duration: 3000
         });
         toast.present();
-        this.navCtrl.navigateRoot('/feed');
+
+        var advogado = "@ilawyer.com";
+        if (this.email.includes(advogado)) {
+          this.navCtrl.navigateRoot('/calendario');
+        } else {
+          this.navCtrl.navigateRoot('/feed');
+        }
 
       }).catch(async (err) => {
         console.log(err)
@@ -41,7 +47,7 @@ export class LoginPage {
   }
 
 
- 
+
 }
 
 

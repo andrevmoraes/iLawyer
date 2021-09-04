@@ -4,9 +4,15 @@ import {
   MenuController,
   NavController,
   ToastController,
+  AlertController,
+  ActionSheetController,
   ModalController
 } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
+import * as moment from 'moment';
+import { formatDate } from '@angular/common';
+
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx'
 
 @Component({
   selector: 'app-marcar-horario',
@@ -21,7 +27,12 @@ export class MarcarHorarioPage implements OnInit {
   desc: string;
   adv: string;
   startTime: string;
+  endTime: string;
   currentDate = new Date();
+
+  imageUrl = "";
+  image: string;
+
 
   //firebase auth
   name: string;
@@ -33,10 +44,14 @@ export class MarcarHorarioPage implements OnInit {
   constructor(
     private menu: MenuController,
     public navCtrl: NavController,
-    public toastCtrl: ToastController) {
+    public toastCtrl: ToastController,
+    private modalCtrl: ModalController,
+    public alertController: AlertController,
+    public actionSheetController: ActionSheetController,
+    private camera: Camera) {
 
   }
-  
+
   ngOnInit(): void {
     this.getUserInfo();
   }
@@ -86,13 +101,14 @@ export class MarcarHorarioPage implements OnInit {
       toast.present();
     });
   }
-  
+
   //salvar agendamento no banco de dados
   agendar() {
     firebase.firestore().collection("agenda").add({
       title: this.title,
       desc: this.desc,
       adv: this.adv,
+      imagem: this.imageUrl,
       startTime: new Date(this.startTime),
       created: firebase.firestore.FieldValue.serverTimestamp(),
       owner: firebase.auth().currentUser.uid,
@@ -103,6 +119,88 @@ export class MarcarHorarioPage implements OnInit {
       //this.getPosts();
     }).catch((err) => {
       console.log(err)
+    })
+  }
+
+  //excluir uma postagem
+  async menuAdvs() {
+    const actionSheet = await this.actionSheetController.create({
+      cssClass: 'my-custom-class',
+      buttons: [
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          //icon: 'trash',
+          handler: async () => {
+            console.log("lidando...");
+          }
+        }, {
+          text: 'Cancelar',
+          //icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]
+    });
+    await actionSheet.present();
+
+    const { role } = await actionSheet.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
+  }
+
+
+  //abrir camera
+  tirarFoto() {
+    let options: CameraOptions = {
+      quality: 100,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+      allowEdit: false
+    }
+
+    this.camera.getPicture(options).then(async (base64Image) => {
+
+      const toast = await this.toastCtrl.create({
+        message: 'Aguarde! Fazendo upload da imagem.',
+        duration: 3000
+      });
+      toast.present();
+      console.log(base64Image);
+      this.image = "data:image/png;base64," + base64Image;
+      this.uploadImage(this.currentDate[Symbol.toPrimitive]('number'));
+    }).catch(async (err) => {
+      console.log(err);
+      const toast = await this.toastCtrl.create({
+        message: err,
+        duration: 3000
+      });
+      toast.present();
+    })
+  }
+
+  //salvar imagem no banco de dados
+  uploadImage(name: string | number) {
+    let ref = firebase.storage().ref("anexoAgenda/" + name);
+    let uploadTask = ref.putString(this.image.split(',')[1], "base64");
+    uploadTask.on("state_changed", (taskSnapshot) => {
+      console.log(taskSnapshot);
+    }, (error) => {
+      console.log(error);
+    }, () => {
+      console.log("Upload de imagem concluído");
+      uploadTask.snapshot.ref.getDownloadURL().then(async (url) => {
+        console.log(url);
+        this.imageUrl = url;
+        const toast = await this.toastCtrl.create({
+          message: "Upload de imagem concluído",
+          duration: 3000
+        });
+        toast.present();
+      })
     })
   }
 

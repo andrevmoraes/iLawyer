@@ -1,16 +1,34 @@
-<ion-header>
+<ion-header [translucent]="false">
   <ion-toolbar>
-    <ion-title>calendario</ion-title>
+    <ion-title>
+      Agenda
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  
-  <ion-calendar [(ngModel)]="date"
-  (onChange)="onChange($event)"
-  [type]="type"
-  [format]="'YYYY-MM-DD'">
-</ion-calendar>
+  <ion-card *ngFor="let agenda of agendas"  (click)="menuAgendamentos(agenda.id, agenda.data().owner)">
+    <center>
+    <ion-card-header>
+      <ion-card-title>{{ agenda.data().title }}</ion-card-title>
+      <br/><ion-card-subtitle>Cliente: {{ agenda.data().owner_name }}</ion-card-subtitle>
+      <ion-card-subtitle>{{ ago(agenda.data().startTime) }} - {{ ateHorarioCalculo(agenda.data().startTime) }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      {{ agenda.data().desc }} <br/><br/>
+
+      <img src="{{ agenda.data().imagem }}">
+      <h3>Criado em: {{ ago(agenda.data().created) }}</h3>
+    </ion-card-content>
+  </center>
+  </ion-card>
 
 </ion-content>

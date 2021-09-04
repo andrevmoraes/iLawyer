@@ -54,7 +54,14 @@ export class SignupPage implements OnInit {
       }).then(() => {
         console.log("Profile Updated")
         this.contaCriadaSucesso();
-        this.navCtrl.navigateRoot('/feed');
+        
+        var advogado = "@ilawyer.com";
+        if (this.email.includes(advogado)) {
+          this.navCtrl.navigateRoot('/calendario');
+        } else {
+          this.navCtrl.navigateRoot('/feed');
+        }
+        
         })
       }).catch(async (err) => {
         console.log(err)
