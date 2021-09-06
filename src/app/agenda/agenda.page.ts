@@ -73,7 +73,6 @@ export class AgendaPage implements OnInit {
 
   ngOnInit() {
     this.getUserInfo();
-    console.log("DATA SELECIONADA: " + this.selectedDate);
   }
 
   //abrir menu

@@ -72,7 +72,6 @@ export class CalendarioPage implements OnInit {
 
   ngOnInit() {
     this.getUserInfo();
-    console.log("DATA SELECIONADA: " + this.selectedDate);
   }
 
   //obter informações do usuário

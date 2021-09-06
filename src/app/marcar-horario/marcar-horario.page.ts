@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ɵLocaleDataIndex } from '@angular/core';
 import firebase from 'firebase';
 import {
   MenuController,
@@ -29,6 +29,9 @@ export class MarcarHorarioPage implements OnInit {
   startTime: string;
   endTime: string;
   currentDate = new Date();
+  permitirAgendamento = true;
+
+  agendas = [];
 
   imageUrl = "";
   image: string;
@@ -54,6 +57,7 @@ export class MarcarHorarioPage implements OnInit {
 
   ngOnInit(): void {
     this.getUserInfo();
+    console.log(this.currentDate);
   }
 
   //abrir menu
@@ -104,22 +108,77 @@ export class MarcarHorarioPage implements OnInit {
 
   //salvar agendamento no banco de dados
   agendar() {
-    firebase.firestore().collection("agenda").add({
-      title: this.title,
-      desc: this.desc,
-      adv: this.adv,
-      imagem: this.imageUrl,
-      startTime: new Date(this.startTime),
-      created: firebase.firestore.FieldValue.serverTimestamp(),
-      owner: firebase.auth().currentUser.uid,
-      owner_name: firebase.auth().currentUser.displayName
-    }).then((doc) => {
-      console.log(doc)
-      this.navCtrl.navigateRoot('/agenda');
-      //this.getPosts();
-    }).catch((err) => {
-      console.log(err)
-    })
+
+    this.agendas = []
+    let query = firebase.firestore().collection("agenda").where("adv", "==", this.adv);
+    query.get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          this.agendas.push(doc);
+          doc.data().startTime;
+
+          var dia = false;
+          var hora = false;
+
+          var startDia = moment(doc.data().startTime.toDate()).format("DD/MM/YYYY");
+          var endDia = moment(doc.data().startTime.toDate()).add(1, 'hour').format("DD/MM/YYYY");
+          var nowDia = moment(this.startTime).format("DD/MM/YYYY");
+
+          var startHora = moment(doc.data().startTime.toDate()).format("HH:mm");
+          var endHora = moment(doc.data().startTime.toDate()).add(1, 'hour').format("HH:mm");
+          var nowHora = moment(this.startTime).format("HH:mm");
+
+          if (startDia <= nowDia && nowDia <= endDia) {
+            dia = true;
+          } else {
+          }
+
+          if (startHora <= nowHora && nowHora <= endHora) {
+            hora = true;
+          } else {
+          }
+
+          if (dia && hora) {
+            this.permitirAgendamento = false;
+            console.log("Data não disponível");
+          }
+
+        })
+        console.log(this.agendas);
+      }).catch((err) => {
+        console.log(err);
+      }).then(async () => {
+
+        console.log("PERMISSAO DE AGENDAMENTO: " + this.permitirAgendamento);
+
+        if (this.permitirAgendamento) {
+
+          firebase.firestore().collection("agenda").add({
+            title: this.title,
+            desc: this.desc,
+            adv: this.adv,
+            imagem: this.imageUrl,
+            startTime: new Date(this.startTime),
+            created: firebase.firestore.FieldValue.serverTimestamp(),
+            owner: firebase.auth().currentUser.uid,
+            owner_name: firebase.auth().currentUser.displayName
+          }).then((doc) => {
+            console.log(doc)
+            this.navCtrl.navigateRoot('/agenda');
+            //this.getPosts();
+          }).catch((err) => {
+            console.log(err)
+          })
+
+        } else {
+          const toast = await this.toastCtrl.create({
+            message: 'Data ou horario não disponível.',
+            duration: 3000
+          });
+          toast.present();
+        }
+      })
+
   }
 
   //excluir uma postagem
@@ -202,6 +261,15 @@ export class MarcarHorarioPage implements OnInit {
         toast.present();
       })
     })
+  }
+
+
+  //not working yet
+  min() {
+    var data = new Date;
+    var datax = moment(data).format("DD-MM-YYYY");
+    console.log(datax);
+    return data;
   }
 
 }
