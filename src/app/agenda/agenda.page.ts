@@ -99,6 +99,12 @@ export class AgendaPage implements OnInit {
         console.log("photoUrl: " + this.photoUrl);
         console.log("emailVerified: " + this.emailVerified);
         console.log("uid: " + this.uid);
+
+        var advogado = "@ilawyer.com";
+        if (this.email.includes(advogado)) {
+          this.navCtrl.navigateRoot('/calendario');
+        }
+
         this.obterAgenda();
       } else {
         console.log("Não foi possível recolher as informações");
@@ -166,7 +172,10 @@ export class AgendaPage implements OnInit {
       }).catch((err) => {
         console.log(err);
       })
+
   }
+
+
 
   //dia selecionado no calendario
   onTimeSelected($event: { selectedTime: Date; }) {

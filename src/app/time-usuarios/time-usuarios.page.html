@@ -1,0 +1,111 @@
+<ion-header [translucent]="false">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button auto-hide="false">
+      </ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Nosso Time
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-menu side="start" menuId="first" contentId="main">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>iLawyer</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item href="/userinfo">
+        <ion-avatar slot="end">
+          <img src="{{ photoUrl }}">
+        </ion-avatar>
+        <ion-label>
+          <h3>{{name}}</h3>
+          <p>{{email}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item href="/feed/">Pagina Inicial</ion-item>
+      <ion-item href="/agenda/">Agenda</ion-item>
+      <ion-item href="/userinfo/">Editar Perfil</ion-item>
+      <ion-item href="/nosso-time/">Nosso Time</ion-item>
+      <ion-item href="https://advocaciaac.adv.br/">Nosso Site</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-router-outlet id="main"></ion-router-outlet>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-content>
+
+      <ion-item>
+        <ion-label>Localização</ion-label>
+        <ion-select [(ngModel)]="cidade">
+          <ion-select-option value="Mogi Mirim">Mogi Mirim</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Especialidade</ion-label>
+        <ion-select [(ngModel)]="especialidade">
+          <ion-select-option value="Trabalhista">Trabalhista</ion-select-option>
+          <ion-select-option value="Imobiliário">Imobiliário</ion-select-option>
+          <ion-select-option value="Civil">Civil</ion-select-option>
+          <ion-select-option value="Bancário">Bancário</ion-select-option>
+          <ion-select-option value="Empresarial">Empresarial</ion-select-option>
+          <ion-select-option value="Contratos">Contratos</ion-select-option>
+          <ion-select-option value="Consumidor">Consumidor</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <br />
+      <center>
+        <ion-button size="small" (click)="obterAgenda()">Buscar</ion-button>
+      </center>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Profissionais</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Além da atuação em conjunto com profissionais de renome e especializados nas áreas de atuações elencadas, com
+      Escritórios de Advocacia e Escritórios de Contabilidades parceiros, “<strong>AC Advocacia</strong>” conta com uma
+      equipe interna
+      representada pelos seguintes advogados:
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="let adv of advs">
+    <img src="{{adv.data().photoURL}}" />
+    <ion-card-header>
+      <ion-card-title> {{adv.data().owner_name}} </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{adv.data().descr}}
+
+      <ion-button size="small">
+        <ion-icon name="add"></ion-icon>&ensp;Agendar horário
+      </ion-button>
+      <ion-button size="small" href="http://wa.me/{{adv.data().tel}}">
+        <ion-icon name="logo-whatsapp"></ion-icon>&ensp;WhatsApp
+      </ion-button>
+      <ion-button size="small" href="mailto:{{adv.data().email}}">
+        <ion-icon name="mail"></ion-icon>&ensp;Email
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

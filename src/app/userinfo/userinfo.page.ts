@@ -27,6 +27,13 @@ export class UserinfoPage implements OnInit {
   uid: string;
   emailVerified: boolean;
 
+  tel: string;
+  nasc: string;
+  sexo: string;
+  att: string;
+  cidade: string;
+
+
   image: string;
 
   constructor(
@@ -67,11 +74,30 @@ export class UserinfoPage implements OnInit {
         console.log("photoUrl: " + this.photoUrl);
         console.log("emailVerified: " + this.emailVerified);
         console.log("uid: " + this.uid);
+        this.obterMaisInfo()
       } else {
         console.log("Não foi possível recolher as informações");
         this.navCtrl.navigateRoot('/');
       }
     });
+  }
+  
+  //obter outras informações do usuario
+  obterMaisInfo() {
+    let query = firebase.firestore().collection("users").where("owner", "==", this.uid);
+    query.get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          this.tel = doc.data().tel;
+          this.cidade = doc.data().cidade;
+          this.nasc = moment(doc.data().nasc).format("DD/MM/YYYY");
+          this.sexo = doc.data().sexo;
+          this.att = moment(doc.data().created.toDate()).format("DD/MM/YYYY HH:mm");
+        })
+      }).catch((err) => {
+        console.log(err);
+      })
+
   }
 
   //sair

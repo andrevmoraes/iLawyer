@@ -51,11 +51,9 @@
     </ion-fab-button>
   </ion-fab>
 
-  <!--
+<!--
+  <ion-row>
 
-  <ion-row>   -->
-  <!-- Mover pra trás -->
-  <!--
     <ion-col size="2">
       <ion-button fill="clear" (click)="back()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
@@ -65,14 +63,13 @@
     <ion-col size="8" class="ion-text-center">
       <h2>{{ viewTitle }}</h2>
     </ion-col>
--->
-  <!-- Mover pra frente -->
-  <!--
+
     <ion-col size="2">
       <ion-button fill="clear" (click)="next()">
         <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-col>
+
   </ion-row>
 
   <ion-segment [(ngModel)]="calendar.mode">
@@ -87,39 +84,42 @@
     </ion-segment-button>
   </ion-segment>
 
-  
-  <calendar
-  [eventSource]="eventSource"
-  [locale]="calendar.locale"
-  [calendarMode]="calendar.mode"
-  [currentDate]="calendar.currentDate"
-  (onTitleChanged)="onViewTitleChanged($event)"
-  (onTimeSelected)="onTimeSelected($event)"
-  starHour="6"
-  endHour="18"
-  step="30"
-  startingDayWeek="1"
-  [monthviewDisplayEventTemplate]="template">
+
+  <calendar [eventSource]="eventSource" [locale]="calendar.locale" [calendarMode]="calendar.mode"
+    [currentDate]="calendar.currentDate" (onTitleChanged)="onViewTitleChanged($event)"
+    (onTimeSelected)="onTimeSelected($event)" starHour="6" endHour="18" step="30" startingDayWeek="1"
+    [monthviewDisplayEventTemplate]="template">
   </calendar>
 
--->
 
-  <ion-card *ngFor="let agenda of agendas"  (click)="menuAgendamentos(agenda.id, agenda.data().owner)">
-    <center>
+  <ion-card>
     <ion-card-header>
-      <ion-card-title>{{ agenda.data().title }}</ion-card-title>
-      <br/><ion-card-subtitle>Adv. {{ agenda.data().adv }}</ion-card-subtitle>
-      <ion-card-subtitle>{{ ago(agenda.data().startTime) }} - {{ ateHorarioCalculo(agenda.data().startTime) }}</ion-card-subtitle>
+      <ion-card-title>
+        <center>Todos os meus eventos</center>
+      </ion-card-title>
     </ion-card-header>
+  </ion-card>
 
-    <ion-card-content>
+  -->
 
-      {{ agenda.data().desc }} <br/><br/>
+  <ion-card *ngFor="let agenda of agendas" (click)="menuAgendamentos(agenda.id, agenda.data().owner)">
+    <center>
+      <ion-card-header>
+        <ion-card-title>{{ agenda.data().title }}</ion-card-title>
+        <br />
+        <ion-card-subtitle>Adv. {{ agenda.data().adv }}</ion-card-subtitle>
+        <ion-card-subtitle>{{ ago(agenda.data().startTime) }} - {{ ateHorarioCalculo(agenda.data().startTime) }}
+        </ion-card-subtitle>
+      </ion-card-header>
 
-      <img src="{{ agenda.data().imagem }}">
-      <h3>Criado em: {{ ago(agenda.data().created) }}</h3>
-    </ion-card-content>
-  </center>
+      <ion-card-content>
+
+        {{ agenda.data().desc }} <br /><br />
+
+        <img src="{{ agenda.data().imagem }}">
+        <h3>Criado em: {{ ago(agenda.data().created) }}</h3>
+      </ion-card-content>
+    </center>
   </ion-card>
 
 </ion-content>

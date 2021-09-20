@@ -1,12 +1,71 @@
-<ion-header>
-  <div class="logo-ilawyer"></div>
-  <p class="slogan texto">Encontre seu advogado</p>
+<ion-header [translucent]="false">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button href="/ilawyer/">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>iLawyer</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-input class="input texto" type="name" placeholder="Digite seu nome" [(ngModel)]="name"></ion-input>
-  <ion-input class="input novo-email texto" type="email" placeholder="Digite seu email" [(ngModel)]="email"></ion-input>
-  <ion-input class="input senha texto" type="password" placeholder="Digite sua senha" [(ngModel)]="password"></ion-input>
-  <ion-button class="botao-entrar cor-botao texto" fill="clear" expand="block" (click)="signup()">Cadastrar</ion-button>
-  <ion-button class="botao-cadastro cor-botao" fill="clear" href="/login">Já tenho conta</ion-button>
+  <ion-card>
+    <ion-card-content>
+
+      <form>
+
+        <ion-list>
+          <ion-item>
+            <ion-input required="true" autocomplete="name" autocapitalize="words" placeholder="Nome" type="name"
+              [(ngModel)]="name" [ngModelOptions]="{standalone: true}"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input required="true" autocomplete="email" pattern="email" inputmode="email" placeholder="Email"
+              type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input required="true" autocomplete="new-password" pattern="password" placeholder="Senha"
+              type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input required="true" autocomplete="tel" pattern="tel" inputmode="tel" maxlength="13"
+              placeholder="Telefone" type="tel" [(ngModel)]="tel" [ngModelOptions]="{standalone: true}"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Localização</ion-label>
+            <ion-select [(ngModel)]="cidade" [ngModelOptions]="{standalone: true}">
+              <ion-select-option value="Mogi Mirim">Mogi Mirim</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Sexo</ion-label>
+            <ion-select [(ngModel)]="sexo" [ngModelOptions]="{standalone: true}">
+              <ion-select-option value="Masculino">Masculino</ion-select-option>
+              <ion-select-option value="Feminino">Feminino</ion-select-option>
+              <ion-select-option value="Outro">Outro</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Nascimento</ion-label>
+            <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="nasc" [ngModelOptions]="{standalone: true}"></ion-datetime>
+          </ion-item>
+        </ion-list>
+
+      </form>
+
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+<ion-card>
+  <ion-card-content>
+    <ion-button expand="block" color="dark" (click)="signup()">Cadastrar</ion-button>
+  </ion-card-content>
+</ion-card>

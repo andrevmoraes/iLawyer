@@ -57,7 +57,6 @@ export class MarcarHorarioPage implements OnInit {
 
   ngOnInit(): void {
     this.getUserInfo();
-    console.log(this.currentDate);
   }
 
   //abrir menu
@@ -84,6 +83,12 @@ export class MarcarHorarioPage implements OnInit {
         console.log("photoUrl: " + this.photoUrl);
         console.log("emailVerified: " + this.emailVerified);
         console.log("uid: " + this.uid);
+
+        var advogado = "@ilawyer.com";
+        if (this.email.includes(advogado)) {
+          this.navCtrl.navigateRoot('/calendario');
+        }
+
       } else {
         console.log("Não foi possível recolher as informações");
         this.navCtrl.navigateRoot('/');

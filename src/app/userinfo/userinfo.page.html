@@ -44,26 +44,74 @@
 
 <ion-content>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col></ion-col>
-      <ion-col>
-        <ion-card>
-          <img src="{{ photoUrl }}" />
-          <ion-card-header>
-            <ion-card-subtitle>{{email}}</ion-card-subtitle>
-            <ion-card-title>{{name}}</ion-card-title>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-card>
+    <center>
+      <ion-card-header>
+        <img src="{{ photoUrl }}" height="150" width="150">
+        <br /><br />
+        <ion-card-title>{{name}}</ion-card-title>
+      </ion-card-header>
+    </center>
+    <ion-card-content>
+      Email: {{email}}
+      <br />
+      Telefone: {{tel}}
+      <br />
+      Sexo: {{sexo}}
+      <br />
+      Nascimento: {{nasc}}
+      <br />
+      Cidade: {{cidade}}
+      <br /><br />
+      Ultima atualização: {{att}}
+    </ion-card-content>
+  </ion-card>
 
-  <ion-button expand="block" (click)="tirarFoto()">Alterar foto</ion-button>
-  <ion-button expand="block" (click)="alterarNomePopup()">Alterar nome</ion-button>
-  <ion-button expand="block" (click)="alterarEmailPopup()">Alterar email</ion-button>
-  <ion-button expand="block" (click)="alterarSenhaPopup()">Alterar senha</ion-button>
-  <ion-button expand="block" color="danger" (click)="deletarContaPopup()">Deletar minha conta</ion-button>
+  <ion-card>
+    
+    <ion-card-content>
+      
+      <center>
+        Alterar dados
+      </center>
+
+<br/>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="tirarFoto()">Foto</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" (click)="alterarNomePopup()">Nome</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="alterarEmailPopup()">Email</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" (click)="alterarSenhaPopup()">Senha</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="alterarTelefonePopup()">Telefone</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" (click)="alterarSexoPopup()">Sexo</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="alterarNascimentoPopup()">Nascimento</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <br /><br />
+      <ion-button expand="block" color="danger" (click)="deletarContaPopup()">Deletar minha conta</ion-button>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
