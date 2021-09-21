@@ -44,34 +44,44 @@
 
 
 <ion-content fullscreen>
-  <br />
-  <ion-list>
-    <ion-item>
-      <ion-input placeholder="Título" [(ngModel)]="title"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input type='textarea' placeholder="Descrição" [(ngModel)]="desc"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Advogado</ion-label>
-      <ion-select [(ngModel)]="adv">
-        <ion-select-option value="Aluísio Bernardes Cortez">Aluísio Bernardes Cortez</ion-select-option>
-        <ion-select-option value="José Carlos Campos Adorno">José Carlos Campos Adorno</ion-select-option>
-        <ion-select-option value="João Eduardo Vicente">João Eduardo Vicente</ion-select-option>
-        <ion-select-option value="Thainá da Cunha Andrade">Thainá da Cunha Andrade</ion-select-option>
-        <ion-select-option value="Fernanda Preto de Oliveira">Fernanda Preto de Oliveira</ion-select-option>
-        <ion-select-option value="Mirella C. M. Oliveira">Mirella C. M. Oliveira</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label>Data e Hora</ion-label>
-      <ion-datetime max={{currentDate.getFullYear()+5}} min={{currentDate.getFullYear()}}
-        display-format="DD/MM/YYYY HH:mm" [(ngModel)]="startTime"></ion-datetime>
-    </ion-item>
-    <br /><br /><br />
-    <ion-button color="light" expand="block" (click)="tirarFoto()">Anexar imagem</ion-button>
-    <ion-button color="success" expand="block" (click)="agendar()">Agendar</ion-button>
-    <ion-button color="danger" expand="block" href="/agenda/">Cancelar</ion-button>
 
-  </ion-list>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-input placeholder="Título" [(ngModel)]="title"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type='textarea' placeholder="Descrição" [(ngModel)]="desc"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Advogado</ion-label>
+          <ion-select [(ngModel)]="adv">
+            <ion-select-option value="Aluísio Bernardes Cortez">Aluísio Bernardes Cortez</ion-select-option>
+            <ion-select-option value="José Carlos Campos Adorno">José Carlos Campos Adorno</ion-select-option>
+            <ion-select-option value="João Eduardo Vicente">João Eduardo Vicente</ion-select-option>
+            <ion-select-option value="Thainá da Cunha Andrade">Thainá da Cunha Andrade</ion-select-option>
+            <ion-select-option value="Fernanda Preto de Oliveira">Fernanda Preto de Oliveira</ion-select-option>
+            <ion-select-option value="Mirella C. M. Oliveira">Mirella C. M. Oliveira</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Data e Hora</ion-label>
+          <ion-datetime max={{currentDate.getFullYear()+5}} min={{currentDate.getFullYear()}}
+            display-format="DD/MM/YYYY HH:mm" [(ngModel)]="startTime"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-button color="medium" (click)="tirarFoto()">Anexar imagem</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
+
+<ion-card>
+  <ion-card-content>
+    <ion-button expand="block" (click)="agendar()">Agendar</ion-button>
+    <ion-button color="light" expand="block" href="/agenda/">Cancelar</ion-button>
+  </ion-card-content>
+</ion-card>

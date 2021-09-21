@@ -40,6 +40,7 @@ export class MarcarHorarioPage implements OnInit {
   //firebase auth
   name: string;
   email: string;
+  tel: string;
   photoUrl: string;
   uid: string;
   emailVerified: boolean;
@@ -114,74 +115,90 @@ export class MarcarHorarioPage implements OnInit {
   //salvar agendamento no banco de dados
   agendar() {
 
-    this.agendas = []
-    let query = firebase.firestore().collection("agenda").where("adv", "==", this.adv);
-    query.get()
+    let queryx = firebase.firestore().collection("users").where("owner", "==", this.uid);
+    queryx.get()
       .then((docs) => {
         docs.forEach((doc) => {
-          this.agendas.push(doc);
-          doc.data().startTime;
+          this.tel = doc.data().tel;
+        });
+      }).then(() => {
+        this.agendas = []
+        let query = firebase.firestore().collection("agenda").where("adv", "==", this.adv);
+        query.get()
+          .then((docs) => {
+            docs.forEach((doc) => {
+              this.agendas.push(doc);
+              doc.data().startTime;
 
-          var dia = false;
-          var hora = false;
+              var dia = false;
+              var hora = false;
 
-          var startDia = moment(doc.data().startTime.toDate()).format("DD/MM/YYYY");
-          var endDia = moment(doc.data().startTime.toDate()).add(1, 'hour').format("DD/MM/YYYY");
-          var nowDia = moment(this.startTime).format("DD/MM/YYYY");
+              var startDia = moment(doc.data().startTime.toDate()).format("DD/MM/YYYY");
+              var endDia = moment(doc.data().startTime.toDate()).add(1, 'hour').format("DD/MM/YYYY");
+              var nowDia = moment(this.startTime).format("DD/MM/YYYY");
 
-          var startHora = moment(doc.data().startTime.toDate()).format("HH:mm");
-          var endHora = moment(doc.data().startTime.toDate()).add(1, 'hour').format("HH:mm");
-          var nowHora = moment(this.startTime).format("HH:mm");
+              var startHora = moment(doc.data().startTime.toDate()).format("HH:mm");
+              var endHora = moment(doc.data().startTime.toDate()).add(1, 'hour').format("HH:mm");
+              var nowHora = moment(this.startTime).format("HH:mm");
 
-          if (startDia <= nowDia && nowDia <= endDia) {
-            dia = true;
-          } else {
-          }
+              if (startDia <= nowDia && nowDia <= endDia) {
+                dia = true;
+              } else {
+                dia = false;
+              }
 
-          if (startHora <= nowHora && nowHora <= endHora) {
-            hora = true;
-          } else {
-          }
+              if (startHora <= nowHora && nowHora <= endHora) {
+                hora = true;
+              } else {
+                dia = false;
+              }
 
-          if (dia && hora) {
-            this.permitirAgendamento = false;
-            console.log("Data não disponível");
-          }
+              if (dia && hora) {
+                this.permitirAgendamento = false;
+                console.log("Data não disponível");
+              } else {
+                this.permitirAgendamento = true;
+                console.log("Data disponível");
+              }
 
-        })
-        console.log(this.agendas);
-      }).catch((err) => {
-        console.log(err);
-      }).then(async () => {
-
-        console.log("PERMISSAO DE AGENDAMENTO: " + this.permitirAgendamento);
-
-        if (this.permitirAgendamento) {
-
-          firebase.firestore().collection("agenda").add({
-            title: this.title,
-            desc: this.desc,
-            adv: this.adv,
-            imagem: this.imageUrl,
-            startTime: new Date(this.startTime),
-            created: firebase.firestore.FieldValue.serverTimestamp(),
-            owner: firebase.auth().currentUser.uid,
-            owner_name: firebase.auth().currentUser.displayName
-          }).then((doc) => {
-            console.log(doc)
-            this.navCtrl.navigateRoot('/agenda');
-            //this.getPosts();
+            })
+            console.log(this.agendas);
           }).catch((err) => {
-            console.log(err)
+            console.log(err);
+          }).then(async () => {
+
+            console.log("PERMISSAO DE AGENDAMENTO: " + this.permitirAgendamento);
+
+            if (this.permitirAgendamento) {
+
+              firebase.firestore().collection("agenda").add({
+                title: this.title,
+                desc: this.desc,
+                adv: this.adv,
+                imagem: this.imageUrl,
+                tel: this.tel,
+                email: this.email,
+                startTime: new Date(this.startTime),
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+                owner: firebase.auth().currentUser.uid,
+                owner_name: firebase.auth().currentUser.displayName
+              }).then((doc) => {
+                console.log(doc)
+                this.navCtrl.navigateRoot('/agenda');
+                //this.getPosts();
+              }).catch((err) => {
+                console.log(err)
+              })
+
+            } else {
+              const toast = await this.toastCtrl.create({
+                message: 'Data ou horario não disponível.',
+                duration: 3000
+              });
+              toast.present();
+            }
           })
 
-        } else {
-          const toast = await this.toastCtrl.create({
-            message: 'Data ou horario não disponível.',
-            duration: 3000
-          });
-          toast.present();
-        }
       })
 
   }

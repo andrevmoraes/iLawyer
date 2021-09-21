@@ -57,6 +57,7 @@
       <ion-item>
         <ion-label>Especialidade</ion-label>
         <ion-select [(ngModel)]="especialidade">
+          <ion-select-option value="Todos">Todos</ion-select-option>
           <ion-select-option value="Trabalhista">Trabalhista</ion-select-option>
           <ion-select-option value="Imobiliário">Imobiliário</ion-select-option>
           <ion-select-option value="Civil">Civil</ion-select-option>
@@ -94,8 +95,9 @@
     </ion-card-header>
     <ion-card-content>
       {{adv.data().descr}}
+      <br/>
 
-      <ion-button size="small">
+      <ion-button size="small" href="/marcar-horario/">
         <ion-icon name="add"></ion-icon>&ensp;Agendar horário
       </ion-button>
       <ion-button size="small" href="http://wa.me/{{adv.data().tel}}">

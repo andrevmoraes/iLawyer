@@ -16,7 +16,7 @@ export class TimeUsuariosPage implements OnInit {
   uid: string;
   emailVerified: boolean;
   cidade = "Mogi Mirim";
-  especialidade = "advogado";
+  especialidade = "Todos";
   descr: string;
 
   advs = [];
@@ -81,7 +81,7 @@ export class TimeUsuariosPage implements OnInit {
 
   obterAgenda() {
     this.advs = []
-    const usuarios = firebase.firestore().collection("users").where("advogado", "==", "true").where('especialidade', 'array-contains', this.especialidade).where('cidade', 'array-contains', this.cidade);
+    const usuarios = firebase.firestore().collection("users").where("advogado", "==", "true").where('especialidade', 'array-contains', this.especialidade).where('cidade', '==', this.cidade);
     usuarios.get()
       .then((docs) => {
         docs.forEach((doc) => {
