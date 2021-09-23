@@ -35,7 +35,7 @@
       <ion-item href="/feed/">Pagina Inicial</ion-item>
       <ion-item href="/agenda/">Agenda</ion-item>
       <ion-item href="/userinfo/">Editar Perfil</ion-item>
-      <ion-item href="/nosso-time/">Nosso Time</ion-item>
+      <ion-item href="/time-usuarios/">Nosso Time</ion-item>
       <ion-item href="https://advocaciaac.adv.br/">Nosso Site</ion-item>
     </ion-list>
   </ion-content>
@@ -102,7 +102,7 @@
 
   -->
 
-  <ion-card *ngFor="let agenda of agendas" (click)="menuAgendamentos(agenda.id, agenda.data().owner)">
+  <ion-card *ngFor="let agenda of agendas">
     <center>
       <ion-card-header>
         <ion-card-title>{{ agenda.data().title }}</ion-card-title>
@@ -118,6 +118,17 @@
 
         <img src="{{ agenda.data().imagem }}">
         <h3>Criado em: {{ ago(agenda.data().created) }}</h3>
+        <br/>
+  
+        <ion-button size="small" color="light" (click)="menuAgendamentos(agenda.id, agenda.data().owner)">
+          Opções
+        </ion-button>
+        <ion-button size="small" href="http://wa.me/{{agenda.data().teladv}}">
+          <ion-icon name="logo-whatsapp"></ion-icon>&ensp;WhatsApp
+        </ion-button>
+        <ion-button size="small" href="mailto:{{agenda.data().emailadv}}">
+          <ion-icon name="mail"></ion-icon>&ensp;Email
+        </ion-button>
       </ion-card-content>
     </center>
   </ion-card>

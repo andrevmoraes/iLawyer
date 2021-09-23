@@ -26,6 +26,7 @@ export class UserinfoPage implements OnInit {
   photoUrl: string;
   uid: string;
   emailVerified: boolean;
+  idDocUsers: string;
 
   tel: string;
   nasc: string;
@@ -93,6 +94,7 @@ export class UserinfoPage implements OnInit {
           this.nasc = moment(doc.data().nasc).format("DD/MM/YYYY");
           this.sexo = doc.data().sexo;
           this.att = moment(doc.data().created.toDate()).format("DD/MM/YYYY HH:mm");
+          this.obterIDdoUsuario();
         })
       }).catch((err) => {
         console.log(err);
@@ -143,6 +145,12 @@ export class UserinfoPage implements OnInit {
           handler: (alertData) => {
             console.log('Confirm Ok');
             this.alterarEmail(alertData.text);
+            var email = alertData.text;
+            console.log('Confirm Ok: ' + email);
+            const data = {
+              email: email
+            };
+            firebase.firestore().collection("users").doc(this.idDocUsers).update(data);
           }
         }
       ]
@@ -200,6 +208,12 @@ export class UserinfoPage implements OnInit {
           handler: (alertData) => {
             console.log('Confirm Ok');
             this.alterarNome(alertData.text);
+            var nome = alertData.text;
+            console.log('Confirm Ok: ' + nome);
+            const data = {
+              owner_name: nome
+            };
+            firebase.firestore().collection("users").doc(this.idDocUsers).update(data);
           }
         }
       ]
@@ -337,6 +351,125 @@ export class UserinfoPage implements OnInit {
 
 
 
+
+
+  //
+
+  //abrir popup de nome
+  async alterarTelefonePopup() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alterar telefone',
+      inputs: [
+        {
+          name: 'text',
+          id: 'text',
+          type: 'text',
+          placeholder: '5519987654321'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Alterar',
+          handler: (alertData) => {
+            var telefone = alertData.text;
+            console.log('Confirm Ok: ' + telefone);
+            const data = {
+              tel: telefone
+            };
+            firebase.firestore().collection("users").doc(this.idDocUsers).update(data);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
+    //abrir popup de nome
+    async alterarSexoPopup() {
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Alterar sexo',
+        inputs: [
+          {
+            name: 'text',
+            id: 'text',
+            type: 'text',
+            placeholder: 'Mulher Trans'
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel');
+            }
+          }, {
+            text: 'Alterar',
+            handler: (alertData) => {
+              var sexo = alertData.text;
+              console.log('Confirm Ok: ' + sexo);
+              const data = {
+                sexo: sexo
+              };
+              firebase.firestore().collection("users").doc(this.idDocUsers).update(data);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    }
+
+
+      //abrir popup de nome
+  async alterarNascimentoPopup() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alterar nascimento',
+      inputs: [
+        {
+          name: 'text',
+          id: 'text',
+          type: 'text',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Alterar',
+          handler: (alertData) => {
+            var nasc = alertData.text;
+            console.log('Confirm Ok: ' + nasc);
+            const data = {
+              nasc: nasc
+            };
+            firebase.firestore().collection("users").doc(this.idDocUsers).update(data);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   //abrir camera
   tirarFoto() {
     let options: CameraOptions = {
@@ -377,6 +510,11 @@ export class UserinfoPage implements OnInit {
       console.log("Upload de imagem concluído");
       uploadTask.snapshot.ref.getDownloadURL().then((url) => {
         console.log(url);
+        console.log('Confirm Ok: ' + url);
+        const data = {
+          imagem: url
+        };
+        firebase.firestore().collection("users").doc(this.idDocUsers).update(data);
 
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
@@ -402,6 +540,20 @@ export class UserinfoPage implements OnInit {
 
       })
     })
+  }
+
+  obterIDdoUsuario() {
+    let query = firebase.firestore().collection("users").where("owner", "==", this.uid);
+    query.get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          this.idDocUsers = doc.id;
+          console.log("id do documento: " + this.idDocUsers);
+        })
+      }).catch((err) => {
+        console.log(err);
+      })
+
   }
 
 }

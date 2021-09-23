@@ -10,5 +10,38 @@
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-content>
 
+        <ion-list>
+
+          <ion-item>
+            <ion-label position="stacked">Descrição</ion-label>
+            <ion-textarea required="true" value={{descr}}
+              [(ngModel)]="descr" [ngModelOptions]="{standalone: true}"></ion-textarea>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Especialidade</ion-label>
+            <ion-select [(ngModel)]="especialidades" multiple="true">
+              <ion-select-option value="Trabalhista">Trabalhista</ion-select-option>
+              <ion-select-option value="Imobiliário">Imobiliário</ion-select-option>
+              <ion-select-option value="Civil">Civil</ion-select-option>
+              <ion-select-option value="Bancário">Bancário</ion-select-option>
+              <ion-select-option value="Empresarial">Empresarial</ion-select-option>
+              <ion-select-option value="Contratos">Contratos</ion-select-option>
+              <ion-select-option value="Consumidor">Consumidor</ion-select-option>
+            </ion-select>
+          </ion-item>      
+             
+        </ion-list>
+
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+<ion-card>
+  <ion-card-content>
+    <ion-button expand="block" color="dark" (click)="signup()">Salvar</ion-button>
+  </ion-card-content>
+</ion-card>

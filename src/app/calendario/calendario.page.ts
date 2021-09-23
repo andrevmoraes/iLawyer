@@ -116,12 +116,13 @@ export class CalendarioPage implements OnInit {
 
   obterAgenda() {
     this.agendas = []
-    let query = firebase.firestore().collection("agenda").where("adv", "==", this.name);
+    let query = firebase.firestore().collection("agenda").orderBy("startTime", "desc").where("adv", "==", this.name);
     query.get()
       .then((docs) => {
         docs.forEach((doc) => {
           this.agendas.push(doc);
-        })
+        })        
+        this.agendas = this.agendas.reverse();
         console.log(this.agendas);
       }).catch((err) => {
         console.log(err);

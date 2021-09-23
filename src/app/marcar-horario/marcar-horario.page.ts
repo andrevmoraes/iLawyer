@@ -31,6 +31,9 @@ export class MarcarHorarioPage implements OnInit {
   currentDate = new Date();
   permitirAgendamento = true;
 
+  teladv: string = "";
+  emailadv: string = "";
+
   agendas = [];
 
   imageUrl = "";
@@ -171,6 +174,18 @@ export class MarcarHorarioPage implements OnInit {
 
             if (this.permitirAgendamento) {
 
+              let query = firebase.firestore().collection("users").where("owner_name", "==", this.adv);
+              query.get()
+                .then((docs) => {
+                  docs.forEach((doc) => {
+                    this.teladv = doc.data().tel;
+                    this.emailadv = doc.data().email;
+                  })
+                  console.log(this.agendas);
+                }).catch((err) => {
+                  console.log(err);
+                })
+
               firebase.firestore().collection("agenda").add({
                 title: this.title,
                 desc: this.desc,
@@ -178,6 +193,8 @@ export class MarcarHorarioPage implements OnInit {
                 imagem: this.imageUrl,
                 tel: this.tel,
                 email: this.email,
+                teladv: this.teladv,
+                emailadv: this.emailadv,
                 startTime: new Date(this.startTime),
                 created: firebase.firestore.FieldValue.serverTimestamp(),
                 owner: firebase.auth().currentUser.uid,
