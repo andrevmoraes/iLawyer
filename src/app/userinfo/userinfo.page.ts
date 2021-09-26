@@ -82,7 +82,7 @@ export class UserinfoPage implements OnInit {
       }
     });
   }
-  
+
   //obter outras informações do usuario
   obterMaisInfo() {
     let query = firebase.firestore().collection("users").where("owner", "==", this.uid);
@@ -286,7 +286,7 @@ export class UserinfoPage implements OnInit {
   //alterar senha
   alterarSenha(senha: string) {
     firebase.auth().currentUser.updatePassword(senha)
-      .then( async () => {
+      .then(async () => {
         console.log("Senha alterada");
         const toast = await this.toastCtrl.create({
           message: "Senha alterada",
@@ -364,8 +364,8 @@ export class UserinfoPage implements OnInit {
         {
           name: 'text',
           id: 'text',
-          type: 'text',
-          placeholder: '5519987654321'
+          type: 'tel',
+          placeholder: '5519987654321 (13 dígitos)',
         },
       ],
       buttons: [
@@ -384,7 +384,9 @@ export class UserinfoPage implements OnInit {
             const data = {
               tel: telefone
             };
-            firebase.firestore().collection("users").doc(this.idDocUsers).update(data);
+            firebase.firestore().collection("users").doc(this.idDocUsers).update(data).then(() => {
+              this.getUserInfo();
+            });
           }
         }
       ]
@@ -394,46 +396,48 @@ export class UserinfoPage implements OnInit {
   }
 
 
-    //abrir popup de nome
-    async alterarSexoPopup() {
-      const alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
-        header: 'Alterar sexo',
-        inputs: [
-          {
-            name: 'text',
-            id: 'text',
-            type: 'text',
-            placeholder: 'Mulher Trans'
-          },
-        ],
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: () => {
-              console.log('Confirm Cancel');
-            }
-          }, {
-            text: 'Alterar',
-            handler: (alertData) => {
-              var sexo = alertData.text;
-              console.log('Confirm Ok: ' + sexo);
-              const data = {
-                sexo: sexo
-              };
-              firebase.firestore().collection("users").doc(this.idDocUsers).update(data);
-            }
+  //abrir popup de nome
+  async alterarSexoPopup() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alterar sexo',
+      inputs: [
+        {
+          name: 'text',
+          id: 'text',
+          type: 'text',
+          placeholder: 'Digite seu sexo'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
           }
-        ]
-      });
-  
-      await alert.present();
-    }
+        }, {
+          text: 'Alterar',
+          handler: (alertData) => {
+            var sexo = alertData.text;
+            console.log('Confirm Ok: ' + sexo);
+            const data = {
+              sexo: sexo
+            };
+            firebase.firestore().collection("users").doc(this.idDocUsers).update(data).then(() => {
+              this.getUserInfo();
+            });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 
 
-      //abrir popup de nome
+  //abrir popup de nome
   async alterarNascimentoPopup() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -442,7 +446,7 @@ export class UserinfoPage implements OnInit {
         {
           name: 'text',
           id: 'text',
-          type: 'text',
+          type: 'date',
         },
       ],
       buttons: [
@@ -461,7 +465,9 @@ export class UserinfoPage implements OnInit {
             const data = {
               nasc: nasc
             };
-            firebase.firestore().collection("users").doc(this.idDocUsers).update(data);
+            firebase.firestore().collection("users").doc(this.idDocUsers).update(data).then(() => {
+              this.getUserInfo();
+            });
           }
         }
       ]

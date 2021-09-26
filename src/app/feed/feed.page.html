@@ -44,33 +44,37 @@
 
 <ion-content>
 
+  <!--
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="presentAlertMultipleButtons()">
       <ion-icon name="create"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+-->
 
   <center><img src="https://advocaciaac.adv.br/wp-content/uploads/2020/06/cropped-advocaciaac-logo-1.png"></center>
 
+  
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-button color="light" expand="block" href="/agenda/">Agenda</ion-button>
+        <ion-button color="light" expand="block" size="large" href="/agenda/">Agenda</ion-button>
       </ion-col>
       <ion-col>
-        <ion-button color="light" expand="block" href="/userinfo/">Editar Perfil</ion-button>
+        <ion-button color="light" expand="block" size="large" href="/userinfo/">Editar Perfil</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button color="light" expand="block" href="/time-usuarios/">Nosso Time</ion-button>
+        <ion-button color="light" expand="block" size="large" href="/time-usuarios/">Nosso Time</ion-button>
       </ion-col>
       <ion-col>
-        <ion-button color="light" expand="block" href="https://advocaciaac.adv.br/">Nosso Site</ion-button>
+        <ion-button color="light" expand="block" size="large" href="https://advocaciaac.adv.br/">Nosso Site</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
-
+  
+  <!--
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -84,4 +88,5 @@
   <ion-infinite-scroll (ionInfinite)="loadMorePosts($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
+  -->
 </ion-content>

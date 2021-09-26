@@ -57,13 +57,15 @@
         <ion-label>Especialidade</ion-label>
         <ion-select [(ngModel)]="especialidade">
           <ion-select-option value="Todos">Todos</ion-select-option>
-          <ion-select-option value="Trabalhista">Trabalhista</ion-select-option>
-          <ion-select-option value="Imobiliário">Imobiliário</ion-select-option>
-          <ion-select-option value="Civil">Civil</ion-select-option>
+
           <ion-select-option value="Bancário">Bancário</ion-select-option>
-          <ion-select-option value="Empresarial">Empresarial</ion-select-option>
+          <ion-select-option value="Civil">Civil</ion-select-option>
+          <ion-select-option value="Consumidor">Consumidor</ion-select-option>  
           <ion-select-option value="Contratos">Contratos</ion-select-option>
-          <ion-select-option value="Consumidor">Consumidor</ion-select-option>
+          <ion-select-option value="Empresarial">Empresarial</ion-select-option> 
+          <ion-select-option value="Imobiliário">Imobiliário</ion-select-option>  
+          <ion-select-option value="Trabalhista">Trabalhista</ion-select-option>  
+          <ion-select-option value="Tributário">Tributário</ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -74,7 +76,7 @@
 
     </ion-card-content>
   </ion-card>
-
+  <!--
   <ion-card>
     <ion-card-header>
       <ion-card-title>Profissionais</ion-card-title>
@@ -86,15 +88,16 @@
       representada pelos seguintes advogados:
     </ion-card-content>
   </ion-card>
+  -->
 
   <ion-card *ngFor="let adv of advs">
-    <img src="{{adv.data().photoURL}}" />
+    <center><img src="{{adv.data().imagem}}" /></center>
     <ion-card-header>
       <ion-card-title> {{adv.data().owner_name}} </ion-card-title>
     </ion-card-header>
     <ion-card-content>
       {{adv.data().descr}}
-      <br/><br/>
+      <br /><br />
 
       <ion-button size="small" href="/marcar-horario/">
         <ion-icon name="add"></ion-icon>&ensp;Agendar horário

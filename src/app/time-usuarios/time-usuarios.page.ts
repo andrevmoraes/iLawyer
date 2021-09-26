@@ -81,7 +81,7 @@ export class TimeUsuariosPage implements OnInit {
 
   obterAgenda() {
     this.advs = []
-    const usuarios = firebase.firestore().collection("users").where("advogado", "==", "true").where('especialidade', 'array-contains', this.especialidade).where('cidade', '==', this.cidade);
+    const usuarios = firebase.firestore().collection("users").where("advogado", "==", "true").where('especialidade', 'array-contains', this.especialidade).where('cidade', '==', this.cidade).orderBy('owner_name');
     usuarios.get()
       .then((docs) => {
         docs.forEach((doc) => {
