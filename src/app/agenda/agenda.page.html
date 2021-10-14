@@ -102,12 +102,18 @@
 
   -->
 
+  <center>{{ vazio }}</center>
+
   <ion-card *ngFor="let agenda of agendas">
     <center>
       <ion-card-header>
         <ion-card-title>{{ agenda.data().title }}</ion-card-title>
         <br />
-        <ion-card-subtitle>Adv. {{ agenda.data().adv }}</ion-card-subtitle>
+        <ion-card-subtitle>
+          Adv. {{ agenda.data().adv }}
+          <br />
+          Processo: {{ agenda.data().proc }}
+        </ion-card-subtitle>
         <ion-card-subtitle>{{ ago(agenda.data().startTime) }} - {{ ateHorarioCalculo(agenda.data().startTime) }}
         </ion-card-subtitle>
       </ion-card-header>

@@ -50,6 +50,10 @@ const routes: Routes = [
     path: 'especialidade',
     loadChildren: () => import('./especialidade/especialidade.module').then( m => m.EspecialidadePageModule)
   },
+  {
+    path: 'area-advogado',
+    loadChildren: () => import('./area-advogado/area-advogado.module').then( m => m.AreaAdvogadoPageModule)
+  },
 
 
 ];

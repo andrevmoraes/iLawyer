@@ -25,6 +25,7 @@ export class MarcarHorarioPage implements OnInit {
 
   title: string;
   desc: string;
+  proc: string;
   adv: string;
   startTime: string;
   endTime: string;
@@ -184,28 +185,31 @@ export class MarcarHorarioPage implements OnInit {
                   console.log(this.agendas);
                 }).catch((err) => {
                   console.log(err);
-                })
+                }).then(() => {
 
-              firebase.firestore().collection("agenda").add({
-                title: this.title,
-                desc: this.desc,
-                adv: this.adv,
-                imagem: this.imageUrl,
-                tel: this.tel,
-                email: this.email,
-                teladv: this.teladv,
-                emailadv: this.emailadv,
-                startTime: new Date(this.startTime),
-                created: firebase.firestore.FieldValue.serverTimestamp(),
-                owner: firebase.auth().currentUser.uid,
-                owner_name: firebase.auth().currentUser.displayName
-              }).then((doc) => {
-                console.log(doc)
-                this.navCtrl.navigateRoot('/agenda');
-                //this.getPosts();
-              }).catch((err) => {
-                console.log(err)
-              })
+                  firebase.firestore().collection("agenda").add({
+                    title: this.title,
+                    desc: this.desc,
+                    proc: this.proc,
+                    adv: this.adv,
+                    imagem: this.imageUrl,
+                    tel: this.tel,
+                    email: this.email,
+                    teladv: this.teladv,
+                    emailadv: this.emailadv,
+                    startTime: new Date(this.startTime),
+                    created: firebase.firestore.FieldValue.serverTimestamp(),
+                    owner: firebase.auth().currentUser.uid,
+                    owner_name: firebase.auth().currentUser.displayName
+                  }).then((doc) => {
+                    console.log(doc)
+                    this.navCtrl.navigateRoot('/agenda');
+                    //this.getPosts();
+                  }).catch((err) => {
+                    console.log(err)
+                  })
+
+                })
 
             } else {
               const toast = await this.toastCtrl.create({

@@ -23,6 +23,7 @@
     "@ionic-native/core": "^5.31.1",
     "@ionic/angular": "^5.5.2",
     "cordova-android": "9.0.0",
+    "cordova-ios": "6.2.0",
     "firebase": "^8.10.0",
     "firestore": "^1.1.6",
     "git": "^0.1.5",
@@ -80,7 +81,8 @@
       }
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }

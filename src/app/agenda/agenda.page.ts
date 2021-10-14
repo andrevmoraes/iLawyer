@@ -31,10 +31,13 @@ export class AgendaPage implements OnInit {
     locale: 'pt-BR',
   };
 
+  vazio = "CARREGANDO...";
+
   selectedDate: Date;
 
   title: string;
   desc: string;
+  proc: string;
   adv: string;
   startTime: string;
   currentDate = new Date();
@@ -170,10 +173,17 @@ export class AgendaPage implements OnInit {
         })
         this.agendas = this.agendas.reverse();
         console.log(this.agendas);
+      }).then(() => {
+        if (this.agendas.length == 0) {
+          this.vazio = "NÃO HÁ AGENDAMENTOS";
+          console.log(this.vazio + this.agendas.length);
+        } else {
+          this.vazio = "";
+          console.log(this.vazio + this.agendas.length);
+        }
       }).catch((err) => {
         console.log(err);
-      })
-
+      })      
   }
 
 
