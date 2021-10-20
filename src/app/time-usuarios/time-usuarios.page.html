@@ -61,11 +61,11 @@
 
           <ion-select-option value="Bancário">Bancário</ion-select-option>
           <ion-select-option value="Civil">Civil</ion-select-option>
-          <ion-select-option value="Consumidor">Consumidor</ion-select-option>  
+          <ion-select-option value="Consumidor">Consumidor</ion-select-option>
           <ion-select-option value="Contratos">Contratos</ion-select-option>
-          <ion-select-option value="Empresarial">Empresarial</ion-select-option> 
-          <ion-select-option value="Imobiliário">Imobiliário</ion-select-option>  
-          <ion-select-option value="Trabalhista">Trabalhista</ion-select-option>  
+          <ion-select-option value="Empresarial">Empresarial</ion-select-option>
+          <ion-select-option value="Imobiliário">Imobiliário</ion-select-option>
+          <ion-select-option value="Trabalhista">Trabalhista</ion-select-option>
           <ion-select-option value="Tributário">Tributário</ion-select-option>
         </ion-select>
       </ion-item>
@@ -99,10 +99,13 @@
     <ion-card-content>
       {{adv.data().descr}}
       <br /><br />
-
+      
+      <!--
       <ion-button size="small" href="/marcar-horario/">
         <ion-icon name="add"></ion-icon>&ensp;Agendar horário
       </ion-button>
+    -->
+
       <ion-button size="small" href="http://wa.me/{{adv.data().tel}}">
         <ion-icon name="logo-whatsapp"></ion-icon>&ensp;WhatsApp
       </ion-button>
