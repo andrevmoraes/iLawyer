@@ -118,6 +118,8 @@ export class MarcarHorarioPage implements OnInit {
 
   //salvar agendamento no banco de dados
   agendar() {
+    
+    this.permitirAgendamento = true;
 
     let queryx = firebase.firestore().collection("users").where("owner", "==", this.uid);
     queryx.get()
@@ -161,7 +163,6 @@ export class MarcarHorarioPage implements OnInit {
                 this.permitirAgendamento = false;
                 console.log("Data não disponível");
               } else {
-                this.permitirAgendamento = true;
                 console.log("Data disponível");
               }
 

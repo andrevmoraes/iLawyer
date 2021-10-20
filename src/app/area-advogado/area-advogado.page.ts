@@ -27,7 +27,10 @@ export class AreaAdvogadoPage implements OnInit {
   uid: string;
   emailVerified: boolean;
 
+  vazio = "CARREGANDO...";
 
+  clientes: any;
+  pessoas: any;
 
   constructor(
     private modalCtrl: ModalController,
@@ -69,7 +72,10 @@ export class AreaAdvogadoPage implements OnInit {
 
         var advogado = "@ilawyer.com";
         if (this.email.includes(advogado)) {
-          this.navCtrl.navigateRoot('/calendario');
+          console.log("Advogado autenticado")
+          this.obterClientes();
+        } else {
+          this.navCtrl.navigateRoot('/feed');
         }
 
         //this.obterAgenda();
@@ -95,5 +101,47 @@ export class AreaAdvogadoPage implements OnInit {
     });
   }
 
+  obterClientes() {
+    this.clientes = [];
+    var novo = [];
+    var processos = [];
+    this.pessoas = [];
+    let query = firebase.firestore().collection("agenda").where("adv", "==", this.name);
+    query.get()
+      .then((docs) => {
 
+        docs.forEach((doc) => {
+          this.clientes.push(doc.data());
+          novo.push(doc.data().owner_name);
+        })
+
+        novo = [...new Map(novo.map(item => [JSON.stringify(item), item])).values()];
+
+        for (var i = 0; i < novo.length; i++) {
+          for (var y = 0; y < this.clientes.length; y++) {
+            if (this.clientes[y].owner_name == novo[i]) {
+              processos.push(this.clientes[y].proc);
+            }
+          }
+          processos = [...new Map(processos.map(item => [JSON.stringify(item), item])).values()];
+          this.pessoas.push({ nome: novo[i], processos: processos });
+          processos = [];
+        }
+
+        console.log(JSON.stringify(this.pessoas));
+
+
+
+      }).then(() => {
+        if (this.clientes.length == 0) {
+          this.vazio = "NÃO HÁ CLIENTES";
+          console.log(this.vazio + this.clientes.length);
+        } else {
+          this.vazio = "";
+          console.log(this.vazio + this.clientes.length);
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+  }
 }

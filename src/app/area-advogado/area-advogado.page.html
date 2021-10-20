@@ -36,13 +36,39 @@
       <ion-item href="/agenda/">Agenda</ion-item>
       <ion-item href="/userinfo/">Editar Perfil</ion-item>
       <ion-item href="/time-usuarios/">Nosso Time</ion-item>
-      <ion-item href="https://advocaciaac.adv.br/">Nosso Site</ion-item>
+      <ion-item href="/area-advogado/">Área do Advogado</ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>
 <ion-router-outlet id="main"></ion-router-outlet>
 
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Cliente</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    Relação de clientes com agendamentos e seus respectivos processos
+  </ion-card-content>
+</ion-card>
 
 <ion-content>
 
+  <center>{{ vazio }}</center>
+
+  <ion-card *ngFor="let pessoa of pessoas">
+    <ion-card-header>
+      <ion-card-subtitle>Cliente:</ion-card-subtitle>
+      <ion-card-title>{{ pessoa.nome }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item *ngFor="let processo of pessoa.processos">Processo: {{ processo }}</ion-item>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
+
+<ion-card href="/especialidade/">
+  <ion-card-content>
+    <center>Alterar descrição e especialidades</center>
+  </ion-card-content>
+</ion-card>
