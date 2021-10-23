@@ -26,7 +26,7 @@ firebase.initializeApp(firebaseConfig);
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot({mode: 'ios'}), AppRoutingModule],
   providers: [
     Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

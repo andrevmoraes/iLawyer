@@ -105,6 +105,8 @@ export class AreaAdvogadoPage implements OnInit {
     this.clientes = [];
     var novo = [];
     var processos = [];
+    var telefone = [];
+    var email = [];
     this.pessoas = [];
     let query = firebase.firestore().collection("agenda").where("adv", "==", this.name);
     query.get()
@@ -121,10 +123,14 @@ export class AreaAdvogadoPage implements OnInit {
           for (var y = 0; y < this.clientes.length; y++) {
             if (this.clientes[y].owner_name == novo[i]) {
               processos.push(this.clientes[y].proc);
+              telefone.push(this.clientes[y].tel);
+              email.push(this.clientes[y].email);
             }
           }
           processos = [...new Map(processos.map(item => [JSON.stringify(item), item])).values()];
-          this.pessoas.push({ nome: novo[i], processos: processos });
+          telefone = [...new Map(telefone.map(item => [JSON.stringify(item), item])).values()];
+          email = [...new Map(email.map(item => [JSON.stringify(item), item])).values()];
+          this.pessoas.push({ nome: novo[i], processos: processos, telefone: telefone, email: email});
           processos = [];
         }
 

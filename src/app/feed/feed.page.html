@@ -5,7 +5,7 @@
       </ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Página Inicial
+      Início
     </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
@@ -32,13 +32,13 @@
           <p>{{email}}</p>
         </ion-label>
       </ion-item>
-      <ion-item href="/feed/">Pagina Inicial</ion-item>
+      <ion-item href="/feed/">Início</ion-item>
       <ion-item href="/agenda/">Agenda</ion-item>
-      <ion-item href="/userinfo/">Editar Perfil</ion-item>
-      <ion-item href="/time-usuarios/">Nosso Time</ion-item>
-      <ion-item href="/area-advogado/">Área do Advogado</ion-item>
+      <ion-item href="/userinfo/">Perfil</ion-item>
+      <ion-item href="/time-usuarios/">Buscar Advogado</ion-item>
     </ion-list>
   </ion-content>
+  <ion-item href="/area-advogado/">Área do Advogado</ion-item>
 </ion-menu>
 <ion-router-outlet id="main"></ion-router-outlet>
 
@@ -52,28 +52,21 @@
   </ion-fab>
 -->
 
-  <center><img src="https://advocaciaac.adv.br/wp-content/uploads/2020/06/cropped-advocaciaac-logo-1.png"></center>
+  <ion-card>
 
-  
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-button color="light" expand="block" size="large" href="/agenda/">Agenda</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-button color="light" expand="block" size="large" href="/userinfo/">Editar Perfil</ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-button color="light" expand="block" size="large" href="/time-usuarios/">Advogados</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-button color="light" expand="block" size="large" href="https://advocaciaac.adv.br/">Nosso Site</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  
+    <ion-card-content>
+      <center><img src="https://advocaciaac.adv.br/wp-content/uploads/2020/06/cropped-advocaciaac-logo-1.png"></center>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-button color="light" expand="block" size="large" href="/agenda/">Agenda</ion-button>
+      <ion-button color="light" expand="block" size="large" href="/userinfo/">Perfil</ion-button>
+      <ion-button color="light" expand="block" size="large" href="/time-usuarios/">Buscar Advogado</ion-button>
+    </ion-card-content>
+  </ion-card>
+
   <!--
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>

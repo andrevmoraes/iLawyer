@@ -1,5 +1,10 @@
 <ion-header [translucent]="false">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button href="/area-advogado/">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>iLawyer</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -39,5 +44,6 @@
 <ion-card>
   <ion-card-content>
     <ion-button expand="block" color="dark" (click)="signup()">Salvar</ion-button>
+    <ion-button expand="block" color="light" href="/area-advogado/">Cancelar</ion-button>
   </ion-card-content>
 </ion-card>
