@@ -71,9 +71,9 @@
       </ion-item>
 
       <br />
-      <center>
+      <div align="center">
         <ion-button size="small" (click)="obterAgenda()">Buscar</ion-button>
-      </center>
+      </div>
 
     </ion-card-content>
   </ion-card>
@@ -92,7 +92,7 @@
   -->
 
   <ion-card *ngFor="let adv of advs">
-    <center><img src="{{adv.data().imagem}}" /></center>
+    <div align="center"><img src="{{adv.data().imagem}}" /></div>
     <ion-card-header>
       <ion-card-title> {{adv.data().owner_name}} </ion-card-title>
     </ion-card-header>

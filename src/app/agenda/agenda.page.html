@@ -102,10 +102,10 @@
 
   -->
 
-  <center>{{ vazio }}</center>
+  <div align="center">{{ vazio }}</div>
 
   <ion-card *ngFor="let agenda of agendas">
-    <center>
+    <div align="center">
       <ion-card-header>
         <ion-card-title>{{ agenda.data().title }}</ion-card-title>
         <br />
@@ -136,7 +136,7 @@
           <ion-icon name="mail"></ion-icon>&ensp;Email
         </ion-button>
       </ion-card-content>
-    </center>
+    </div>
   </ion-card>
 
 </ion-content>
